@@ -7,7 +7,7 @@ public class spawnBalls : MonoBehaviour {
 
     public int balls = 15;
     public int rows = 5;
-    public float ballRadius = 0.75f;
+    public float ballRadius = 0.49f;
 
     public Object redBallPrefab;
     public Object yellBallPrefab;
@@ -15,20 +15,23 @@ public class spawnBalls : MonoBehaviour {
     public Object cueBallPrefab;
 
     bool startSpot;
-
+    GameManager gm;
 
 	// Use this for initialization
 	void Start () {
         startSpot = true;
+        gm = GameManager.gameMan;
         if (redBallPrefab != null && yellBallPrefab != null && blackBallPrefab != null && cueBallPrefab != null)
         {
             Vector3 spawnPos = transform.position;
             float rowStartX = transform.position.x - ballRadius;
-            float rowStartZ = transform.position.z;
+            float rowStartZ = transform.position.z - ballRadius;
 
             spawnPos.z = rowStartZ - (((ballRadius * 2) * 15));
-            spawnPos.y += 3f;
+            spawnPos.y += 0.01f ;
             Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
+            gm.SetCueBallSpawn(spawnPos);
+
             spawnPos.y = transform.position.y;
             for (int i = 0; i < (rows+1); ++i)
             {
@@ -55,7 +58,7 @@ public class spawnBalls : MonoBehaviour {
                     }
                 }
 
-                rowStartZ += ballRadius * 2;
+                rowStartZ += ballRadius * 1.7325f;
                 rowStartX += ballRadius;
                 startSpot = !startSpot;
             }

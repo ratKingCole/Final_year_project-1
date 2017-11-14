@@ -15,12 +15,12 @@ public class spawnBalls : MonoBehaviour {
     public Object cueBallPrefab;
 
     bool startSpot;
-    GameManager gm;
+    GMScript gm;
 
 	// Use this for initialization
 	void Start () {
         startSpot = true;
-        gm = GameManager.gameMan;
+        gm = GMScript.gameMan;
         if (redBallPrefab != null && yellBallPrefab != null && blackBallPrefab != null && cueBallPrefab != null)
         {
             Vector3 spawnPos = transform.position;

@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class ball : MonoBehaviour {
 	public Rigidbody rb;
+
 	void start(){
 		rb = GetComponent<Rigidbody> ();
 	}
 
 	private void hit(){
-		rb.AddForce (new Vector3(1f,0f,30f), ForceMode.Impulse);
+		rb.AddForce (new Vector3(0f,0f,10f), ForceMode.Impulse);
 	}
 
 	void onMouseDown(){
@@ -18,7 +19,6 @@ public class ball : MonoBehaviour {
 	}
 
 	void Awake(){
-
 		Invoke ("hit", 1f);
 	}
 }

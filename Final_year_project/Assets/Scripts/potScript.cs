@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class potScript : MonoBehaviour {
 
-    GameManager gm;
+    GMScript gm;
     Rigidbody rb;
     GameObject colObject;
 
     private void Start()
     {
-        gm = GameManager.gameMan;
+        gm = GMScript.gameMan;
     }
 
     private void OnCollisionEnter(Collision collision)

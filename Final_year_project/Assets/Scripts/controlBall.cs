@@ -9,11 +9,11 @@ public class controlBall : MonoBehaviour {
 
     float horizMove;
     float vertMove;
-    GameManager gm;
+    GMScript gm;
 
 	// Use this for initialization
 	void Start () {
-        gm = GameManager.gameMan;
+        gm = GMScript.gameMan;
         gm.SetCueBall(gameObject);
         rb = GetComponent<Rigidbody>();
         horizMove = 0.0f;

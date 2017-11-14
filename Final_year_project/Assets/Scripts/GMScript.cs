@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GMScript : MonoBehaviour
 {
 
-    public static GameManager gameMan;
+    public static GMScript gameMan;
 
     GameObject cueBall;
     Vector3 cueBallSpawn;
@@ -14,10 +14,11 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        if(gameMan == null)
+        if (gameMan == null)
         {
             gameMan = this;
-        } else
+        }
+        else
         {
             Destroy(this);
         }

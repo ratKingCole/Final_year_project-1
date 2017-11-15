@@ -12,7 +12,7 @@ public class GMScript : MonoBehaviour
 
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         if (gameMan == null)
         {

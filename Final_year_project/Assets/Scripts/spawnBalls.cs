@@ -19,6 +19,16 @@ public class spawnBalls : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Invoke("RackBalls", 1.0f);
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+
+    void RackBalls()
+    {
         startSpot = true;
         gm = GMScript.gameMan;
         if (redBallPrefab != null && yellBallPrefab != null && blackBallPrefab != null && cueBallPrefab != null)
@@ -28,12 +38,12 @@ public class spawnBalls : MonoBehaviour {
             float rowStartZ = transform.position.z - ballRadius;
 
             spawnPos.z = rowStartZ - (((ballRadius * 2) * 15));
-            spawnPos.y += 0.01f ;
+            spawnPos.y += 0.01f;
             Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
             gm.SetCueBallSpawn(spawnPos);
 
             spawnPos.y = transform.position.y;
-            for (int i = 0; i < (rows+1); ++i)
+            for (int i = 0; i < (rows + 1); ++i)
             {
                 bool isSpot = startSpot;
                 for (int j = 0; j < i; j++)
@@ -44,7 +54,8 @@ public class spawnBalls : MonoBehaviour {
                     {
                         Instantiate(blackBallPrefab, spawnPos, Quaternion.identity);
                     }
-                    else {                    
+                    else
+                    {
                         if (isSpot)
                         {
                             Instantiate(redBallPrefab, spawnPos, Quaternion.identity);
@@ -53,7 +64,7 @@ public class spawnBalls : MonoBehaviour {
                         else
                         {
                             Instantiate(yellBallPrefab, spawnPos, Quaternion.identity);
-                            isSpot = true;                            
+                            isSpot = true;
                         }
                     }
                 }
@@ -63,10 +74,5 @@ public class spawnBalls : MonoBehaviour {
                 startSpot = !startSpot;
             }
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
 }

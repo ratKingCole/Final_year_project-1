@@ -33,10 +33,17 @@ public class ingameUIScript : MonoBehaviour {
 	}
 
     void UpdateTargetText()
-    {        
-        if(targetText != null)
+    {
+        if (targetText != null)
         {
-            targetText.text = "You must pot " + player1Target;
+            if (gameManager.GetPlayer1Score() >= 7)
+            {
+                targetText.text = "You must pot the black ball";
+            }
+            else
+            {
+                targetText.text = "You must pot " + player1Target;
+            }
         }
     }
 

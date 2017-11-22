@@ -297,7 +297,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &210044068
 RectTransform:
   m_ObjectHideFlags: 0
@@ -866,6 +866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetText: {fileID: 1976568085}
   scoreText: {fileID: 964170738}
+  endGameText: {fileID: 210044069}
 --- !u!1001 &1207274958
 Prefab:
   m_ObjectHideFlags: 0

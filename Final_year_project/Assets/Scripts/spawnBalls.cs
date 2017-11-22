@@ -14,12 +14,21 @@ public class spawnBalls : MonoBehaviour {
     public Object blackBallPrefab;
     public Object cueBallPrefab;
 
+
     bool startSpot;
     GMScript gm;
-
+    int[][] spawnArray = new int[][] {
+                                     new int[] {1},
+                                     new int[] {1, 0},
+                                     new int[] {0, 1 ,1},
+                                     new int[] {1, 1, 0, 0},
+                                     new int[] {0, 1, 0, 0, 1}
+                                     };
 	// Use this for initialization
 	void Start () {
+        
         Invoke("RackBalls", 1.0f);
+
 	}
 
     void RackBalls()
@@ -38,9 +47,8 @@ public class spawnBalls : MonoBehaviour {
             gm.SetCueBallSpawn(spawnPos);
 
             spawnPos.y = transform.position.y;
-            for (int i = 0; i < (rows + 1); ++i)
+            for (int i = 0; i < (rows+1); i++)
             {
-                bool isSpot = startSpot;
                 for (int j = 0; j < i; j++)
                 {
                     spawnPos.x = rowStartX - (((ballRadius * 2) * j));
@@ -51,15 +59,13 @@ public class spawnBalls : MonoBehaviour {
                     }
                     else
                     {
-                        if (isSpot)
+                        if (spawnArray[i-1][j] == 1)
                         {
-                            Instantiate(redBallPrefab, spawnPos, Quaternion.identity);
-                            isSpot = false;
+                            Instantiate(redBallPrefab, spawnPos, Quaternion.identity);                            
                         }
                         else
                         {
-                            Instantiate(yellBallPrefab, spawnPos, Quaternion.identity);
-                            isSpot = true;
+                            Instantiate(yellBallPrefab, spawnPos, Quaternion.identity);                            
                         }
                     }
                 }

@@ -37,6 +37,7 @@ public class potScript : MonoBehaviour {
         {
             Debug.Log("You potted the black");
             Destroy(collision.gameObject);
+            gm.PottedBlackBall();
         }
     }
 

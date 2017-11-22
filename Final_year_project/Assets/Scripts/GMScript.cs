@@ -19,6 +19,9 @@ public class GMScript : MonoBehaviour
     public delegate void PotBall();
     public static event PotBall potBallEvent;
 
+    public delegate void EndGame();
+    public static event EndGame endGameEvent;
+
     // Use this for initialization
     void Awake()
     {
@@ -119,6 +122,11 @@ public class GMScript : MonoBehaviour
         }
 
         potBallEvent();
+    }
+
+    public void PottedBlackBall()
+    {
+        endGameEvent();
     }
 
 }

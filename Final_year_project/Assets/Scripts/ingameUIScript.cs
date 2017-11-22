@@ -11,6 +11,7 @@ public class ingameUIScript : MonoBehaviour {
 
     public Text targetText;
     public Text scoreText;
+    public Text endGameText;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +21,7 @@ public class ingameUIScript : MonoBehaviour {
         GMScript.potBallEvent += UpdateScoreText;
         GMScript.potBallEvent += UpdateTargetText;
 
+        GMScript.endGameEvent += EndGameUI;
         GetTargets();
         UpdateTargetText();
         UpdateScoreText();
@@ -64,5 +66,18 @@ public class ingameUIScript : MonoBehaviour {
             player1Target = "stripes";
             player2Target = "spots";
         }
+    }
+
+    public void EndGameUI()
+    {
+        if(gameManager.GetPlayer1Score() >= 7)
+        {
+            endGameText.text = "You win!";
+        } else
+        {
+            endGameText.text = "You loose!";
+        }
+
+        endGameText.gameObject.SetActive(true);
     }
 }

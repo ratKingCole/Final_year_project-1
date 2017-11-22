@@ -21,11 +21,6 @@ public class spawnBalls : MonoBehaviour {
 	void Start () {
         Invoke("RackBalls", 1.0f);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     void RackBalls()
     {

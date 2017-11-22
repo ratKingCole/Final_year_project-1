@@ -11,6 +11,8 @@ public class controlBall : MonoBehaviour {
     float vertMove;
     GMScript gm;
 
+    bool isGameOver = false;
+
 	// Use this for initialization
 	void Start () {
         gm = GMScript.gameMan;
@@ -18,17 +20,27 @@ public class controlBall : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         horizMove = 0.0f;
         vertMove = 0.0f;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        horizMove = Input.GetAxis("Horizontal");
-        vertMove = Input.GetAxis("Vertical");
+        GMScript.endGameEvent += SetEndGame;
 	}
 
+    // Update is called once per frame
+    void Update()
+    {
+        if (!isGameOver)
+        {
+            horizMove = Input.GetAxis("Horizontal");
+            vertMove = Input.GetAxis("Vertical");
+
+        }
+    }
     private void FixedUpdate()
     {
         Vector3 forceToApply = new Vector3(horizMove * movespeed, 0.0f, vertMove * movespeed);
         rb.AddForce(forceToApply);
+    }
+
+    void SetEndGame()
+    {
+        isGameOver = true;
     }
 }

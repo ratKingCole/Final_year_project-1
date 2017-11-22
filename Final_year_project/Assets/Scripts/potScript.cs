@@ -21,10 +21,12 @@ public class potScript : MonoBehaviour {
         {
             Destroy(collision.gameObject);
             Debug.Log("Potted spot ball");
+            gm.PottedSpotBall();
         } else if(tag == "stripeBall")
         {
             Destroy(collision.gameObject);
             Debug.Log("Potted spot ball");
+            gm.PottedStripeBall();
         } else if(tag == "cueBall")
         {
             Debug.Log("Oh no, you potted the cue ball!");
@@ -35,6 +37,7 @@ public class potScript : MonoBehaviour {
         {
             Debug.Log("You potted the black");
             Destroy(collision.gameObject);
+            gm.PottedBlackBall();
         }
     }
 

@@ -26,40 +26,44 @@ public class poolCue : MonoBehaviour {
 	void Update () {
         cueBall = GameObject.Find("cueBall(Clone)");
         pivot = GameObject.Find("cuePivot");
-        rb = cueBall.GetComponent<Rigidbody>();
 
-        pivot.transform.position = new Vector3(cueBall.transform.position.x, cueBall.transform.position.y, cueBall.transform.position.z);
-        //transform.SetParent(pivot.transform);
-        //transform.position = new Vector3(pivot.transform.position.x + cueOffset.x, pivot.transform.position.y + cueOffset.y, pivot.transform.position.z + cueOffset.z);
-        transform.LookAt(cueBall.transform.position + cueRotOffset);
-
-        if (reset == true)
+        if (cueBall != null && pivot != null)
         {
-            if (Mathf.Abs(rb.velocity.x) < 0.01f && Mathf.Abs(rb.velocity.y) < 0.2f && Mathf.Abs(rb.velocity.z) < 0.01f)
+            rb = cueBall.GetComponent<Rigidbody>();
+
+            pivot.transform.position = new Vector3(cueBall.transform.position.x, cueBall.transform.position.y, cueBall.transform.position.z);
+            //transform.SetParent(pivot.transform);
+            //transform.position = new Vector3(pivot.transform.position.x + cueOffset.x, pivot.transform.position.y + cueOffset.y, pivot.transform.position.z + cueOffset.z);
+            transform.LookAt(cueBall.transform.position + cueRotOffset);
+
+            if (reset == true)
             {
-                transform.position = pivot.transform.position + cuePosOffset;
-                reset = false;
-                canHit = true;
+                if (Mathf.Abs(rb.velocity.x) < 0.01f && Mathf.Abs(rb.velocity.y) < 0.2f && Mathf.Abs(rb.velocity.z) < 0.01f)
+                {
+                    transform.position = pivot.transform.position + cuePosOffset;
+                    reset = false;
+                    canHit = true;
+                }
+                else
+                {
+                    reset = true;
+                    canHit = false;
+                }
             }
-            else
+
+            if (canHit == true)
+                if (Input.GetKey(KeyCode.H))
+                    Invoke("ballAim", 0f);
+
+            if (Input.GetKey(KeyCode.A))
             {
-                reset = true;
-                canHit = false;
+                transform.RotateAround(pivot.transform.position, Vector3.up, speed * Time.deltaTime);
             }
-        }
 
-        if(canHit == true)
-            if (Input.GetKey(KeyCode.H))
-                Invoke("ballAim", 0f);
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.RotateAround(pivot.transform.position, Vector3.up, speed * Time.deltaTime);
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.RotateAround(pivot.transform.position, -Vector3.up, speed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.RotateAround(pivot.transform.position, -Vector3.up, speed * Time.deltaTime);
+            }
         }
     }
 
@@ -72,7 +76,7 @@ public class poolCue : MonoBehaviour {
 
     private void hit()
     {
-        rb.AddRelativeForce(new Vector3(0f, 0f, 2f), ForceMode.Impulse);
+        rb.AddRelativeForce(new Vector3(0f, 0f, 0.25f), ForceMode.Impulse);
         reset = true;
     }
 }

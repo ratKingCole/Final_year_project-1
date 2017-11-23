@@ -17,7 +17,7 @@ public class ball : MonoBehaviour {
 
     private void Update()
     {
-        rb = GameObject.Find("cueBall(Clone)").GetComponent<Rigidbody>();
+        //rb = GameObject.Find("cueBall(Clone)").GetComponent<Rigidbody>();
         //if (Input.GetKey(KeyCode.H)) Invoke("hit", 0f);
         
 

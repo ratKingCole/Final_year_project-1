@@ -14,13 +14,16 @@ public class spawnBalls : MonoBehaviour {
     public Object blackBallPrefab;
     public Object cueBallPrefab;
 
+    //public Object poolCuePrefab;
+
     bool startSpot;
     GMScript gm;
 
 	// Use this for initialization
 	void Start () {
         Invoke("RackBalls", 1.0f);
-	}
+        //Instantiate(poolCuePrefab);
+    }
 	
 	// Update is called once per frame
 	void Update () {

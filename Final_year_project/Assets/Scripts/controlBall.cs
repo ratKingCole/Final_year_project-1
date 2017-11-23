@@ -22,13 +22,13 @@ public class controlBall : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        horizMove = Input.GetAxis("Horizontal");
-        vertMove = Input.GetAxis("Vertical");
+       // horizMove = Input.GetAxis("Horizontal");
+        //vertMove = Input.GetAxis("Vertical");
 	}
 
     private void FixedUpdate()
     {
-        Vector3 forceToApply = new Vector3(horizMove * movespeed, 0.0f, vertMove * movespeed);
-        rb.AddForce(forceToApply);
+        //Vector3 forceToApply = new Vector3(horizMove * movespeed, 0.0f, vertMove * movespeed);
+        //rb.AddForce(forceToApply);
     }
 }

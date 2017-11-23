@@ -8,6 +8,6 @@ PhysicMaterial:
   m_Name: bumpers
   dynamicFriction: 0.8
   staticFriction: 0.8
-  bounciness: 1
+  bounciness: 0.7
   frictionCombine: 0
   bounceCombine: 0

@@ -23,6 +23,15 @@ public class controlBall : MonoBehaviour {
         GMScript.endGameEvent += SetEndGame;
 	}
 
+
+	
+	// Update is called once per frame
+	void Update () {
+       // horizMove = Input.GetAxis("Horizontal");
+        //vertMove = Input.GetAxis("Vertical");
+	}
+>>>>>>> cc4dcfc9098e3490062b92f003821cd198707442
+
     // Update is called once per frame
     void Update()
     {
@@ -35,12 +44,7 @@ public class controlBall : MonoBehaviour {
     }
     private void FixedUpdate()
     {
-        Vector3 forceToApply = new Vector3(horizMove * movespeed, 0.0f, vertMove * movespeed);
-        rb.AddForce(forceToApply);
-    }
-
-    void SetEndGame()
-    {
-        isGameOver = true;
+        //Vector3 forceToApply = new Vector3(horizMove * movespeed, 0.0f, vertMove * movespeed);
+        //rb.AddForce(forceToApply);
     }
 }

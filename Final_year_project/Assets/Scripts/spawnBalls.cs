@@ -15,17 +15,14 @@ public class spawnBalls : MonoBehaviour {
     public Object cueBallPrefab;
 
 
+
     bool startSpot;
     GMScript gm;
-    int[][] spawnArray = new int[][] {
-                                     new int[] {1},
-                                     new int[] {1, 0},
-                                     new int[] {0, 1 ,1},
-                                     new int[] {1, 1, 0, 0},
-                                     new int[] {0, 1, 0, 0, 1}
-                                     };
+
 	// Use this for initialization
 	void Start () {
+        //Instantiate(poolCuePrefab);
+	}
         
         Invoke("RackBalls", 1.0f);
 

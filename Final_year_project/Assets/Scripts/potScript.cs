@@ -32,6 +32,7 @@ public class potScript : MonoBehaviour {
             Debug.Log("Oh no, you potted the cue ball!");
             rb = collision.gameObject.GetComponent<Rigidbody>();
             colObject.SetActive(false);
+            gm.PottedCueBall();
             Invoke("ResetCueBall", 1.0f);
         } else if(tag == "blackBall")
         {

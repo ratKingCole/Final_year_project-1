@@ -10,11 +10,8 @@ public class GMScript : MonoBehaviour
     GameObject cueBall;
     Vector3 cueBallSpawn;
 
-    Target player1Target;
-    Target player2Target;
-    int player1Score = 0;
-    int player2Score = 0;
     bool firstPot = true;
+    bool isPlayer1Turn = true;
 
     public delegate void PotBall();
     public static event PotBall potBallEvent;
@@ -22,19 +19,32 @@ public class GMScript : MonoBehaviour
     public delegate void EndGame();
     public static event EndGame endGameEvent;
 
+    public delegate void StartTurn();
+    public static event StartTurn startTurnEvent;
+
+    public delegate void EndTurn();
+    public static event EndTurn endTurnEvent;
+
+    playerManager playerMan;
+
     // Use this for initialization
     void Awake()
     {
+        playerMan = playerManager.playerMan;
+
         if (gameMan == null)
         {
             gameMan = this;
-            player1Target = Target.None;
-            player2Target = Target.None;
         }
         else
         {
             Destroy(this);
         }
+
+        playerMan.SetPlayer1Target(Target.None);
+        playerMan.SetPlayer2Target(Target.None);
+        endTurnEvent += FlipIsPlayer1TurnBool;
+        startTurnEvent += StartNextTurn;
     }
 
     // Update is called once per frame
@@ -63,36 +73,22 @@ public class GMScript : MonoBehaviour
         return cueBallSpawn;
     }
 
-    public Target GetPlayer1Target()
-    {
-        return player1Target;
-    }
-
-    public void SetPlayer1Score(int score)
-    {
-        player1Score += score;
-    }
-
-    public int GetPlayer1Score()
-    {
-        return player1Score;
-    }
-
     public void PottedSpotBall()
     {
         if (firstPot == true)
         {
-            player1Score += 1;
-            player1Target = GMScript.Target.Spots;
-            player2Target = GMScript.Target.Stripes;
+            playerMan.AddPlayer1Score(1);
+            playerMan.SetPlayer1Target(Target.Spots);
+            playerMan.SetPlayer2Target(Target.Stripes);
             firstPot = false;
         } else
         {
-            if(player1Target == GMScript.Target.Spots)
+            if(playerMan.GetPlayer1Target() == GMScript.Target.Spots)
             {
-                player1Score += 1;
+                playerMan.AddPlayer1Score(1);
             } else
             {
+                endTurnEvent();
                 Debug.Log("Oh no, you potted the wrong ball");
             }
         }
@@ -104,23 +100,23 @@ public class GMScript : MonoBehaviour
     {
         if (firstPot == true)
         {
-            player1Score += 1;
-            player2Target = GMScript.Target.Spots;
-            player1Target = GMScript.Target.Stripes;
+            playerMan.AddPlayer1Score(1);
+            playerMan.SetPlayer2Target(GMScript.Target.Spots);
+            playerMan.SetPlayer1Target(GMScript.Target.Stripes);
             firstPot = false;
         }
         else
         {
-            if (player1Target == GMScript.Target.Stripes)
+            if (playerMan.GetPlayer1Target() == GMScript.Target.Stripes)
             {
-                player1Score += 1;
+                playerMan.AddPlayer1Score(1);
             }
             else
             {
                 Debug.Log("Oh no, you potted the wrong ball");
+                endTurnEvent();
             }
         }
-
         potBallEvent();
     }
 
@@ -129,4 +125,23 @@ public class GMScript : MonoBehaviour
         endGameEvent();
     }
 
+    public void PottedCueBall()
+    {
+        endTurnEvent();
+    }
+
+    public void FlipIsPlayer1TurnBool()
+    {
+        isPlayer1Turn = !isPlayer1Turn;
+    }
+
+    private void StartNextTurn()
+    {
+        
+    }
+
+    public bool GetIsPlayer1Turn()
+    {
+        return isPlayer1Turn;
+    }
 }

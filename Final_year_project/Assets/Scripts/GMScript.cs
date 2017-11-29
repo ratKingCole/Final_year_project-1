@@ -12,6 +12,7 @@ public class GMScript : MonoBehaviour
 
     bool firstPot = true;
     bool isPlayer1Turn = true;
+    bool playerHasPot = false;
 
     public delegate void PotBall();
     public static event PotBall potBallEvent;
@@ -81,11 +82,13 @@ public class GMScript : MonoBehaviour
             playerMan.SetPlayer1Target(Target.Spots);
             playerMan.SetPlayer2Target(Target.Stripes);
             firstPot = false;
+            SetPlayerHasPot(true);
         } else
         {
             if(playerMan.GetPlayer1Target() == GMScript.Target.Spots)
             {
                 playerMan.AddPlayer1Score(1);
+                SetPlayerHasPot(true);
             } else
             {
                 endTurnEvent();
@@ -104,6 +107,7 @@ public class GMScript : MonoBehaviour
             playerMan.SetPlayer2Target(GMScript.Target.Spots);
             playerMan.SetPlayer1Target(GMScript.Target.Stripes);
             firstPot = false;
+            
         }
         else
         {
@@ -143,5 +147,25 @@ public class GMScript : MonoBehaviour
     public bool GetIsPlayer1Turn()
     {
         return isPlayer1Turn;
+    }
+
+    public void SetPlayerHasPot(bool hasPlayerPot)
+    {
+        playerHasPot = hasPlayerPot;
+    }
+
+    public bool GetPlayerHasPot()
+    {
+        return playerHasPot;
+    }
+
+    public void SetPlayerHasPotTrue()
+    {
+        playerHasPot = true;
+    }
+
+    public void CallEndTurnEvent()
+    {
+        endTurnEvent();
     }
 }

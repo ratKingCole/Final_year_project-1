@@ -7,10 +7,13 @@ public class playerManager : MonoBehaviour {
 
     public static playerManager playerMan;
 
+    GMScript gm;
     GMScript.Target player1Target;
     GMScript.Target player2Target;
     int player1Score = 0;
     int player2Score = 0;
+
+    bool playerHit = false;
 
     private void Awake()
     {
@@ -24,7 +27,7 @@ public class playerManager : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-		
+        gm = GMScript.gameMan;
 	}
 	
 	// Update is called once per frame
@@ -75,6 +78,17 @@ public class playerManager : MonoBehaviour {
     public void AddPlayer2Score(int score)
     {
         player2Score += score;
+    }
+
+    public void SetPlayerHit(bool hasPlayerHit)
+    {
+        playerHit = hasPlayerHit;
+        gm.SetPlayerHasPot(false);
+    }
+
+    public bool GetPlayerHit()
+    {
+        return playerHit;
     }
 
 }

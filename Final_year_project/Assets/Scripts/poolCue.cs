@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class poolCue : MonoBehaviour {
 
+    playerManager playerMan;
+    GMScript gm;
     GameObject cueBall;
     GameObject pivot;
     public Rigidbody rb;
@@ -19,7 +21,8 @@ public class poolCue : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+        playerMan = playerManager.playerMan;
+        gm = GMScript.gameMan;
     }
 	
 	// Update is called once per frame
@@ -41,8 +44,14 @@ public class poolCue : MonoBehaviour {
                 if (Mathf.Abs(rb.velocity.x) < 0.01f && Mathf.Abs(rb.velocity.y) < 0.2f && Mathf.Abs(rb.velocity.z) < 0.01f)
                 {
                     transform.position = pivot.transform.position + cuePosOffset;
+                    
                     reset = false;
                     canHit = true;
+
+                    if(gm.GetPlayerHasPot() == false)
+                    {
+                        gm.CallEndTurnEvent();
+                    }
                 }
                 else
                 {
@@ -52,8 +61,13 @@ public class poolCue : MonoBehaviour {
             }
 
             if (canHit == true)
+            {
                 if (Input.GetKey(KeyCode.H))
+                {
                     Invoke("ballAim", 0f);
+                    
+                }
+            }
 
             if (Input.GetKey(KeyCode.A))
             {
@@ -78,5 +92,6 @@ public class poolCue : MonoBehaviour {
     {
         rb.AddRelativeForce(new Vector3(0f, 0f, 0.25f), ForceMode.Impulse);
         reset = true;
+        playerMan.SetPlayerHit(true);
     }
 }

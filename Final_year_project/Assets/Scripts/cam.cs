@@ -39,8 +39,6 @@ public class cam : MonoBehaviour {
 
             transform.position = new Vector3(cues.transform.position.x + cameraOffset.x, cues.transform.position.y + cameraOffset.y, cues.transform.position.z + cameraOffset.z);
         }
-
-
     }
 
         

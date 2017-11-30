@@ -1285,6 +1285,7 @@ Transform:
   m_PrefabParentObject: {fileID: 4083547385919972, guid: 54027cec5183ff34c82ed69144475ccf,
     type: 2}
   m_PrefabInternal: {fileID: 1207274958}
+
 --- !u!1 &1278298018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1748,6 +1749,7 @@ Transform:
   m_PrefabParentObject: {fileID: 4083547385919972, guid: 54027cec5183ff34c82ed69144475ccf,
     type: 2}
   m_PrefabInternal: {fileID: 1521637563}
+
 --- !u!1 &1534465434
 GameObject:
   m_ObjectHideFlags: 0
@@ -2302,6 +2304,7 @@ CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
+
   m_GameObject: {fileID: 2007522861}
 --- !u!1 &2052608695
 GameObject:

@@ -8,6 +8,7 @@ public class poolCue : MonoBehaviour {
     GMScript gm;
     GameObject cueBall;
     GameObject pivot;
+    GameObject cue;
     public Rigidbody rb;
     private Vector3 cueOffset;
     private Vector3 cRotate = new Vector3(0f, 15f, 0f);
@@ -29,22 +30,21 @@ public class poolCue : MonoBehaviour {
 	void Update () {
         cueBall = GameObject.Find("cueBall(Clone)");
         pivot = GameObject.Find("cuePivot");
+        cue = GameObject.Find("poolCue");
 
         if (cueBall != null && pivot != null)
         {
             rb = cueBall.GetComponent<Rigidbody>();
 
             pivot.transform.position = new Vector3(cueBall.transform.position.x, cueBall.transform.position.y, cueBall.transform.position.z);
-            //transform.SetParent(pivot.transform);
-            //transform.position = new Vector3(pivot.transform.position.x + cueOffset.x, pivot.transform.position.y + cueOffset.y, pivot.transform.position.z + cueOffset.z);
             transform.LookAt(cueBall.transform.position + cueRotOffset);
 
             if (reset == true)
             {
                 if (Mathf.Abs(rb.velocity.x) < 0.01f && Mathf.Abs(rb.velocity.y) < 0.2f && Mathf.Abs(rb.velocity.z) < 0.01f)
                 {
+                    cue.GetComponent<MeshRenderer>().enabled = true;
                     transform.position = pivot.transform.position + cuePosOffset;
-                    
                     reset = false;
                     canHit = true;
 
@@ -55,17 +55,9 @@ public class poolCue : MonoBehaviour {
                 }
                 else
                 {
+                    cue.GetComponent<MeshRenderer>().enabled = false;
                     reset = true;
                     canHit = false;
-                }
-            }
-
-            if (canHit == true)
-            {
-                if (Input.GetKey(KeyCode.H))
-                {
-                    Invoke("ballAim", 0f);
-                    
                 }
             }
 
@@ -81,16 +73,27 @@ public class poolCue : MonoBehaviour {
         }
     }
 
-    private void ballAim()
+    public void Fire(float power)
     {
-        //cueBall.transform.rotation = Quaternion.LookRotation(ballRotation);
-        cueBall.transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y, 0f);
-        Invoke("hit", 3f);
+        if (canHit == true)
+        {
+            cue.GetComponent<MeshRenderer>().enabled = false;
+            BallAim(power);
+
+        }
     }
 
-    private void hit()
+    private void BallAim(float power)
     {
-        rb.AddRelativeForce(new Vector3(0f, 0f, 0.25f), ForceMode.Impulse);
+        cueBall.transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y, 0f);
+        StartCoroutine(Hit(power));
+    }
+    
+    private IEnumerator Hit(float power)
+    {
+        yield return new WaitForSeconds(0.01f);
+
+        rb.AddRelativeForce(new Vector3(0f, 0f, power), ForceMode.Impulse);
         reset = true;
         playerMan.SetPlayerHit(true);
     }

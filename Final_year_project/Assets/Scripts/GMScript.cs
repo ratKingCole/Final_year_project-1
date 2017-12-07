@@ -8,7 +8,9 @@ public class GMScript : MonoBehaviour
     public static GMScript gameMan;
 
     GameObject cueBall;
+    GameObject cue;
     Vector3 cueBallSpawn;
+    ingameUIScript ui;
 
     bool firstPot = true;
     bool isPlayer1Turn = true;
@@ -27,6 +29,7 @@ public class GMScript : MonoBehaviour
     public static event EndTurn endTurnEvent;
 
     playerManager playerMan;
+    List<GameObject> ballList = new List<GameObject>();
 
     // Use this for initialization
     void Awake()
@@ -167,5 +170,35 @@ public class GMScript : MonoBehaviour
     public void CallEndTurnEvent()
     {
         endTurnEvent();
+    }
+
+    public void SetUIObject(ingameUIScript ui)
+    {
+        this.ui = ui;
+    }
+
+    public ingameUIScript GetUIObject()
+    {
+        return ui;
+    }
+
+    public void SetBallList(List<GameObject> list)
+    {
+        ballList = list;
+    }
+
+    public List<GameObject> GetBallList()
+    {
+        return ballList;
+    }
+
+    public void SetCueObject(GameObject obj)
+    {
+        cue = obj;
+    }
+
+    public GameObject GetCueObject()
+    {
+        return cue;
     }
 }

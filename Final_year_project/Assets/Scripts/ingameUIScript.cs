@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ingameUIScript : MonoBehaviour {
 
     GMScript gameManager;
+    
     playerManager playerMan;
     string player1Target;
     string player2Target;
@@ -19,11 +20,12 @@ public class ingameUIScript : MonoBehaviour {
 	void Start () {
         gameManager = GMScript.gameMan;
         playerMan = playerManager.playerMan;
+        gameManager.SetUIObject(this);
 
         GMScript.potBallEvent += GetTargets;
         GMScript.potBallEvent += UpdateScoreText;
         GMScript.potBallEvent += UpdateTargetText;
-        GMScript.endTurnEvent += UpdateTurnText;
+        
 
         GMScript.endGameEvent += EndGameUI;
         GetTargets();

@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class powerSlider : MonoBehaviour {
 
+    GMScript gm;
     GameObject poolCue;
     public Text powerText;
     public Slider pwrSlider;
 
 
     void Start () {
-        poolCue = GameObject.Find("poolCue");
+        gm = GMScript.gameMan;
+        poolCue = gm.GetCueObject();
     }
 
     void Update()

@@ -50,6 +50,12 @@ public class playerManager : MonoBehaviour {
         return player1Target;
     }
 
+    public GMScript.Target GetPlayer2Target()
+    {
+        return player2Target;
+    }
+
+
     public void SetPlayer1Score(int score)
     {
         player1Score = score;

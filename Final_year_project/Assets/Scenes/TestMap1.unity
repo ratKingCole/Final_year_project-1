@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1285,7 +1285,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4083547385919972, guid: 54027cec5183ff34c82ed69144475ccf,
     type: 2}
   m_PrefabInternal: {fileID: 1207274958}
-
 --- !u!1 &1278298018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1749,7 +1748,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4083547385919972, guid: 54027cec5183ff34c82ed69144475ccf,
     type: 2}
   m_PrefabInternal: {fileID: 1521637563}
-
 --- !u!1 &1534465434
 GameObject:
   m_ObjectHideFlags: 0
@@ -1940,7 +1938,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1709832655}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 411, y: 191, z: 0}
+  m_LocalPosition: {x: 507.5, y: 211, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1112909425}
@@ -2162,7 +2160,7 @@ MonoBehaviour:
   firstperson: {fileID: 1534465438}
   overhead: {fileID: 193876536}
   thirdperson: {fileID: 1278298022}
-  cue: {fileID: 382295456}
+  cue: {fileID: 0}
 --- !u!1 &1926715064
 GameObject:
   m_ObjectHideFlags: 0
@@ -2304,7 +2302,6 @@ CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-
   m_GameObject: {fileID: 2007522861}
 --- !u!1 &2052608695
 GameObject:

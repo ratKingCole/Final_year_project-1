@@ -19,11 +19,13 @@ public class potScript : MonoBehaviour {
         colObject = collision.gameObject;
         if (tag == "spotBall")
         {
+            gm.RemoveBallFromList(collision.gameObject);
             Destroy(collision.gameObject);
             Debug.Log("Potted spot ball");
             gm.PottedSpotBall();
         } else if(tag == "stripeBall")
         {
+            gm.RemoveBallFromList(collision.gameObject);
             Destroy(collision.gameObject);
             Debug.Log("Potted spot ball");
             gm.PottedStripeBall();
@@ -36,6 +38,7 @@ public class potScript : MonoBehaviour {
             Invoke("ResetCueBall", 1.0f);
         } else if(tag == "blackBall")
         {
+            gm.RemoveBallFromList(collision.gameObject);
             Debug.Log("You potted the black");
             Destroy(collision.gameObject);
             gm.PottedBlackBall();

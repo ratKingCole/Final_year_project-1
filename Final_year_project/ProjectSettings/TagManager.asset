@@ -8,6 +8,7 @@ TagManager:
   - stripeBall
   - blackBall
   - cueBall
+  - ballSpawner
   layers:
   - Default
   - TransparentFX

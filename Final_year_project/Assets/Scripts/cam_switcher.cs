@@ -8,8 +8,10 @@ public class cam_switcher : MonoBehaviour {
     public Camera overhead;
     public Camera thirdperson;
     public Camera cue;
+    GMScript gm;
 
     void Start() {
+        gm = GMScript.gameMan;
         firstperson.enabled = false;
         overhead.enabled = true;
         thirdperson.enabled = false;

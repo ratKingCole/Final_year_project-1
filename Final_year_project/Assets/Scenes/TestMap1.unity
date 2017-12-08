@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -225,7 +225,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 193876533}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &193876535
 Behaviour:
   m_ObjectHideFlags: 0
@@ -714,6 +714,7 @@ Transform:
   m_Children:
   - {fileID: 1860745662}
   - {fileID: 1023105049}
+  - {fileID: 1402542338}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -836,7 +837,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 943822688}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -389, y: -258, z: 0}
+  m_LocalPosition: {x: 0, y: 262, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1112909425}
@@ -844,7 +845,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -389, y: -258}
+  m_AnchoredPosition: {x: 0, y: 262}
   m_SizeDelta: {x: 386.5, y: 46.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &988595756
@@ -1321,7 +1322,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1278298018}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &1278298021
 Behaviour:
   m_ObjectHideFlags: 0
@@ -1593,6 +1594,53 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1380826835}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1402542337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1402542338}
+  - component: {fileID: 1402542339}
+  m_Layer: 0
+  m_Name: Turn Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1402542338
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1402542337}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 599218127}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1402542339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1402542337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 316f783b53f741d428523a9ba23b4f5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finalCheckDelay: 5
+  gm: {fileID: 0}
+  pm: {fileID: 0}
+  ui: {fileID: 0}
+  cue: {fileID: 0}
+  hasAllBallsStoppedMovement: 1
+  numOfMovingBalls: 0
 --- !u!1 &1479911654
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,7 +1832,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1534465434}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &1534465437
 Behaviour:
   m_ObjectHideFlags: 0
@@ -1938,7 +1986,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1709832655}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 507.5, y: 211, z: 0}
+  m_LocalPosition: {x: 599.5, y: 298, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1112909425}
@@ -2105,6 +2153,7 @@ MonoBehaviour:
     type: 2}
   cueBallPrefab: {fileID: 1796120598309692, guid: 55f75f574c48ed9468e7105de3f1d72d,
     type: 2}
+  ballSpawnDelay: 1
 --- !u!1 &1860745660
 GameObject:
   m_ObjectHideFlags: 0
@@ -2133,6 +2182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d358550448bff54b83102f135629b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cue: {fileID: 0}
+  ballList: []
 --- !u!4 &1860745662
 Transform:
   m_ObjectHideFlags: 0
@@ -2160,7 +2211,7 @@ MonoBehaviour:
   firstperson: {fileID: 1534465438}
   overhead: {fileID: 193876536}
   thirdperson: {fileID: 1278298022}
-  cue: {fileID: 0}
+  cue: {fileID: 382295456}
 --- !u!1 &1926715064
 GameObject:
   m_ObjectHideFlags: 0

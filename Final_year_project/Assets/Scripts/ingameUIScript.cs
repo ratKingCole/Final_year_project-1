@@ -58,7 +58,7 @@ public class ingameUIScript : MonoBehaviour {
     {
         if(scoreText != null)
         {
-            scoreText.text = "Score: " + playerMan.GetPlayer1Score(); 
+            scoreText.text = "Player 1 - " + playerMan.GetPlayer1Score() + " : " + playerMan.GetPlayer1Score() + " - Player 2"; 
         }
     }
 

@@ -68,6 +68,7 @@ public class poolCue : MonoBehaviour {
     {
         cueBall.transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y, 0f);
         StartCoroutine(Hit(power));
+
     }
     
     private IEnumerator Hit(float power)
@@ -77,6 +78,7 @@ public class poolCue : MonoBehaviour {
         rb.AddRelativeForce(new Vector3(0f, 0f, power), ForceMode.Impulse);
         canHit = false;
         playerMan.SetPlayerHit(true);
+        tm.CueBallHit();
     }
 
     void TurnOffCue()

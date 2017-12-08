@@ -14,7 +14,8 @@ public class spawnBalls : MonoBehaviour {
     public Object blackBallPrefab;
     public Object cueBallPrefab;
 
-
+    [SerializeField]
+    float ballSpawnDelay = 1.0f;
     bool startSpot;
     GMScript gm;
     int[][] spawnArray = new int[][] {
@@ -29,8 +30,7 @@ public class spawnBalls : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         ballList = new List<GameObject>();
-        Invoke("RackBalls", 1.0f);
-
+        Invoke("RackBalls", ballSpawnDelay);
 	}
 
     void RackBalls()
@@ -47,6 +47,7 @@ public class spawnBalls : MonoBehaviour {
             spawnPos.y += 0.01f;
             Object cueBallInstantiate = Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
             gm.SetCueBallSpawn(spawnPos);
+            gm.SetCueBall((GameObject)cueBallInstantiate);
             ballList.Add((GameObject)cueBallInstantiate);
 
             spawnPos.y = transform.position.y;
@@ -81,6 +82,7 @@ public class spawnBalls : MonoBehaviour {
                 startSpot = !startSpot;
             }
 
+            gm.SetBallList(ballList);
 
         }
     }

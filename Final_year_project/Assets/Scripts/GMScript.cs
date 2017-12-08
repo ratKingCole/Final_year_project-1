@@ -8,6 +8,7 @@ public class GMScript : MonoBehaviour
     public static GMScript gameMan;
 
     GameObject cueBall;
+    [SerializeField]
     GameObject cue;
     Vector3 cueBallSpawn;
     ingameUIScript ui;
@@ -29,6 +30,7 @@ public class GMScript : MonoBehaviour
     public static event EndTurn endTurnEvent;
 
     playerManager playerMan;
+    [SerializeField]
     List<GameObject> ballList = new List<GameObject>();
 
     // Use this for initialization
@@ -60,11 +62,22 @@ public class GMScript : MonoBehaviour
     public void SetCueBall(GameObject obj)
     {
         cueBall = obj;
+        if(cue != null)
+        {
+            cue.GetComponent<poolCue>().ResetCue();
+        }
     }
 
     public GameObject GetCueBall()
     {
-        return cueBall;
+        if (cueBall != null)
+        {
+            return cueBall;
+        } else
+        {
+            return null;
+        }
+
     }
 
     public void SetCueBallSpawn(Vector3 vec3)
@@ -179,7 +192,13 @@ public class GMScript : MonoBehaviour
 
     public ingameUIScript GetUIObject()
     {
-        return ui;
+        if (ui != null)
+        {
+            return ui;
+        } else
+        {
+            return null;
+        }
     }
 
     public void SetBallList(List<GameObject> list)
@@ -195,6 +214,11 @@ public class GMScript : MonoBehaviour
     public void SetCueObject(GameObject obj)
     {
         cue = obj;
+    }
+
+    public void RemoveBallFromList(GameObject obj)
+    {
+        ballList.Remove(obj);
     }
 
     public GameObject GetCueObject()

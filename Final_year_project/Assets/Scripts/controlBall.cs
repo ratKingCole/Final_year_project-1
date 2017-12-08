@@ -30,6 +30,7 @@ public class controlBall : MonoBehaviour
     {
         horizMove = Input.GetAxis("Horizontal");
         vertMove = Input.GetAxis("Vertical");
+        transform.Rotate(0, 0, 300 * Time.deltaTime);
     }
 
     private void FixedUpdate()

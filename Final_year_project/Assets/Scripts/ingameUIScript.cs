@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class ingameUIScript : MonoBehaviour {
 
-    GMScript gameManager;
-    
+    GMScript gameManager;    
     playerManager playerMan;
+    turnManagerScript tm;
+
     string player1Target;
     string player2Target;
 
@@ -20,14 +21,13 @@ public class ingameUIScript : MonoBehaviour {
 	void Start () {
         gameManager = GMScript.gameMan;
         playerMan = playerManager.playerMan;
+        tm = turnManagerScript.turnManager;
         gameManager.SetUIObject(this);
 
         GMScript.potBallEvent += GetTargets;
         GMScript.potBallEvent += UpdateScoreText;
         GMScript.potBallEvent += UpdateTargetText;
         
-
-        GMScript.endGameEvent += EndGameUI;
         GetTargets();
         UpdateTargetText();
         UpdateScoreText();
@@ -39,7 +39,7 @@ public class ingameUIScript : MonoBehaviour {
 		
 	}
 
-    void UpdateTargetText()
+    public void UpdateTargetText()
     {
         if (targetText != null)
         {
@@ -49,16 +49,22 @@ public class ingameUIScript : MonoBehaviour {
             }
             else
             {
-                targetText.text = "You must pot " + player1Target;
+                if (tm.GetIsPlayer1Turn())
+                {
+                    targetText.text = "You must pot " + player1Target;
+                } else
+                {
+                    targetText.text = "You must pot " + player2Target;
+                }
             }
         }
     }
 
-    void UpdateScoreText()
+    public void UpdateScoreText()
     {
         if(scoreText != null)
         {
-            scoreText.text = "Player 1 - " + playerMan.GetPlayer1Score() + " : " + playerMan.GetPlayer1Score() + " - Player 2"; 
+            scoreText.text = "Player 1 - " + playerMan.GetPlayer1Score() + " : " + playerMan.GetPlayer2Score() + " - Player 2"; 
         }
     }
 
@@ -82,22 +88,23 @@ public class ingameUIScript : MonoBehaviour {
         }
     }
 
-    public void EndGameUI()
+    public void EndGameUI(bool isWin)
     {
-        if(playerMan.GetPlayer1Score() >= 7)
+        if(isWin)
         {
-            endGameText.text = "You win!";
+            endGameText.text = "You win, congratulations!";
         } else
         {
-            endGameText.text = "You loose!";
+            endGameText.text = "You lose! :(";
         }
 
+        gameManager.SetGameEnded(true);
         endGameText.gameObject.SetActive(true);
     }
 
     public void UpdateTurnText()
     {
-        if(gameManager.GetIsPlayer1Turn() == true)
+        if(tm.GetIsPlayer1Turn() == true)
         {
             turnText.text = "Player 1's turn";
         } else

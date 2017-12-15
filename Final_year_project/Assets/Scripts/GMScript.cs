@@ -16,6 +16,7 @@ public class GMScript : MonoBehaviour
     bool firstPot = true;
     bool isPlayer1Turn = true;
     bool playerHasPot = false;
+    bool hasGameEnded = false;
 
     public delegate void PotBall();
     public static event PotBall potBallEvent;
@@ -224,5 +225,10 @@ public class GMScript : MonoBehaviour
     public GameObject GetCueObject()
     {
         return cue;
+    }
+
+    public void SetGameEnded(bool isGameOver)
+    {
+        hasGameEnded = isGameOver;
     }
 }

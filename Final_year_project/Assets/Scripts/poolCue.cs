@@ -27,6 +27,10 @@ public class poolCue : MonoBehaviour {
         gm = GMScript.gameMan;
         tm = turnManagerScript.turnManager;
         gm.SetCueObject(this.gameObject);
+
+        cueBall = gm.GetCueBall();
+        pivot = GameObject.Find("cuePivot");
+        cue = this.gameObject;
     }
 	
 	// Update is called once per frame
@@ -88,6 +92,12 @@ public class poolCue : MonoBehaviour {
 
     public void ResetCue()
     {
+        if (cueBall != null && pivot != null)
+        {
+            pivot.transform.position = new Vector3(cueBall.transform.position.x, cueBall.transform.position.y, cueBall.transform.position.z);
+            transform.LookAt(cueBall.transform.position + cueRotOffset);
+        }
+
         cue.GetComponent<MeshRenderer>().enabled = true;
         transform.position = pivot.transform.position + cuePosOffset;
         canHit = true;

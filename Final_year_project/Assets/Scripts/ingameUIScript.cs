@@ -12,10 +12,18 @@ public class ingameUIScript : MonoBehaviour {
     string player1Target;
     string player2Target;
 
-    public Text targetText;
-    public Text scoreText;
-    public Text endGameText;
-    public Text turnText;
+    [SerializeField]
+    private Text targetText;
+    [SerializeField]
+    private Text scoreText;
+    [SerializeField]
+    private Text endGameText;
+    [SerializeField]
+    private Text turnText;
+    [SerializeField]
+    private GameObject ingameTextObject;
+    [SerializeField]
+    private GameObject colourSelectObject;
 
 	// Use this for initialization
 	void Start () {
@@ -62,9 +70,10 @@ public class ingameUIScript : MonoBehaviour {
 
     public void UpdateScoreText()
     {
+        Vector2 ballsRemaining = tm.GetBallsRemaining();
         if(scoreText != null)
         {
-            scoreText.text = "Player 1 - " + playerMan.GetPlayer1Score() + " : " + playerMan.GetPlayer2Score() + " - Player 2"; 
+            scoreText.text = "Spots - " + (int)ballsRemaining.x + " : " + (int)ballsRemaining.y + " - Stripes"; 
         }
     }
 
@@ -111,5 +120,17 @@ public class ingameUIScript : MonoBehaviour {
         {
             turnText.text = "Player 2's turn";
         }
+    }
+
+    public void EnableColourSelectText()
+    {
+        ingameTextObject.SetActive(false);
+        colourSelectObject.SetActive(true);
+    }
+
+    public void DisableColourSelectText()
+    {
+        ingameTextObject.SetActive(true);
+        colourSelectObject.SetActive(false);
     }
 }

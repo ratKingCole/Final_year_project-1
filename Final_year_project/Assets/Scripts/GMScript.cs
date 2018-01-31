@@ -31,6 +31,7 @@ public class GMScript : MonoBehaviour
     public static event EndTurn endTurnEvent;
 
     playerManager playerMan;
+
     [SerializeField]
     List<GameObject> ballList = new List<GameObject>();
 

@@ -21,6 +21,10 @@ public class cueBallScript : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-
+        if(tm == null)
+        {
+            tm = turnManagerScript.turnManager;
+        }
+        tm.SetFirstBallHitThisTurn(collision.gameObject);
     }
 }

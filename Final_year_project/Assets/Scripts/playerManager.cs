@@ -8,9 +8,13 @@ public class playerManager : MonoBehaviour {
     public static playerManager playerMan;
 
     GMScript gm;
+    [SerializeField]
     GMScript.Target player1Target;
+    [SerializeField]
     GMScript.Target player2Target;
+    [SerializeField]
     int player1Score = 0;
+    [SerializeField]
     int player2Score = 0;
 
     bool playerHit = false;
@@ -97,5 +101,7 @@ public class playerManager : MonoBehaviour {
     {
         return playerHit;
     }
+
+
 
 }

@@ -174,6 +174,10 @@ public class turnManagerScript : MonoBehaviour
                                 }
                                 else
                                 {
+                                    if(ui == null)
+                                    {
+                                        ui = gm.GetUIObject();
+                                    }
                                     ui.EnableColourSelectText();
                                 }
                             }

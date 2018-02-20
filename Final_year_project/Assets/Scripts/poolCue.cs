@@ -20,6 +20,7 @@ public class poolCue : MonoBehaviour {
     bool reset = true;
     bool canHit = true;
     Quaternion quaternion;
+    float multiplier = 2000;
 
     // Use this for initialization
     void Start () {
@@ -58,28 +59,32 @@ public class poolCue : MonoBehaviour {
         }
     }
 
-    public void Fire(float power)
+    public void Fire(float power, float xSpin, float zSpin)
     {
         if (canHit == true)
         {
             TurnOffCue();
-            BallAim(power);
+            BallAim(power, xSpin, zSpin);
 
         }
     }
 
-    private void BallAim(float power)
+    private void BallAim(float power, float xSpin, float zSpin)
     {
         cueBall.transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y, 0f);
-        StartCoroutine(Hit(power));
+        StartCoroutine(Hit(power, xSpin, zSpin));
 
     }
     
-    private IEnumerator Hit(float power)
+    private IEnumerator Hit(float power, float xSpin, float zSpin)
     {
         yield return new WaitForSeconds(0.01f);
 
         rb.AddRelativeForce(new Vector3(0f, 0f, power), ForceMode.Impulse);
+        cueBall.GetComponent<ConstantForce>().torque = new Vector3((xSpin * multiplier), 0, (zSpin * multiplier));
+
+        Debug.Log(Mathf.Ceil(xSpin * multiplier));
+
         canHit = false;
         playerMan.SetPlayerHit(true);
         tm.CueBallHit();

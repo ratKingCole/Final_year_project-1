@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class turnManagerScript : MonoBehaviour
 {
+    GameObject cueBall;
+
 
     public static turnManagerScript turnManager;
     public float finalCheckDelay = 5.0f;
@@ -80,6 +82,7 @@ public class turnManagerScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        cueBall = gm.GetCueBall();
 
         gm = GMScript.gameMan;
 
@@ -359,6 +362,7 @@ public class turnManagerScript : MonoBehaviour
     public void SetCueBallHasHitBall(bool hasHit)
     {
         cueBallHitBall = hasHit;
+        cueBall.GetComponent<ConstantForce>().torque = Vector3.zero;
     }
 
     public void SetInitialBallHit(GameObject obj)
@@ -546,5 +550,10 @@ public class turnManagerScript : MonoBehaviour
     public Vector2 GetBallsRemaining()
     {
         return new Vector2(numOfSpots, numOfStripes);
+    }
+
+    public void SetCueBallHitAnything()
+    {
+
     }
 }

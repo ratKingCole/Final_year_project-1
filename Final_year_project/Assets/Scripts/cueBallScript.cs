@@ -16,8 +16,9 @@ public class cueBallScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        //GetComponent<Rigidbody>().AddRelativeTorque(0, 0, 30); left and right
+        //GetComponent<Rigidbody>().AddTorque(30, 0, 0); up and down
+    }
 
     void OnCollisionEnter(Collision collision)
     {

@@ -23,6 +23,8 @@ GameObject:
   - component: {fileID: 135285729350241432}
   - component: {fileID: 23202093546574624}
   - component: {fileID: 54032024114059890}
+  - component: {fileID: 114626796696197862}
+  - component: {fileID: 114265335017913984}
   m_Layer: 0
   m_Name: blackBall
   m_TagString: blackBall
@@ -99,6 +101,59 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114265335017913984
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1598107225502370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &114626796696197862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1598107225502370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 86
+    i1: 114
+    i2: 76
+    i3: 215
+    i4: 138
+    i5: 184
+    i6: 41
+    i7: 100
+    i8: 90
+    i9: 196
+    i10: 85
+    i11: 29
+    i12: 183
+    i13: 187
+    i14: 109
+    i15: 178
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!135 &135285729350241432
 SphereCollider:
   m_ObjectHideFlags: 1

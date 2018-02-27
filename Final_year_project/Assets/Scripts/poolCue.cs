@@ -22,13 +22,11 @@ public class poolCue : MonoBehaviour {
     bool canHit = true;
     bool fireBall = false;
     Quaternion quaternion;
-    float multiplier = 2000;
-
     float xSpin1;
     float zSpin1;
     float pwr;
-
-    private int count = 0;
+    float multiplier = 10;
+    bool spin = false;
 
     // Use this for initialization
     void Start () {
@@ -40,6 +38,7 @@ public class poolCue : MonoBehaviour {
         cueBall = gm.GetCueBall();
         pivot = GameObject.Find("cuePivot");
         cue = this.gameObject;
+        cueBall.GetComponent<Rigidbody>().maxAngularVelocity = 0;
     }
 	
 	// Update is called once per frame
@@ -73,6 +72,11 @@ public class poolCue : MonoBehaviour {
         {
             Fire(pwr, xSpin1, zSpin1);
             fireBall = false;
+        }     
+        
+        if(spin == true)
+        {
+            rb.AddTorque(new Vector3(0f, 0f, 10f));
         }
     }
 
@@ -102,28 +106,15 @@ public class poolCue : MonoBehaviour {
 
     }
 
-    void timer_Tick(object sender, EventArgs e)
-    {
-        count += 1;
-        Debug.Log(count);
-    }
-
     private IEnumerator Hit(float power, float xSpin, float zSpin)
     {
         yield return new WaitForSeconds(0.01f);
-
         rb.AddRelativeForce(new Vector3(0f, 0f, power), ForceMode.Impulse);
 
-        count = 0;
-        while(count<10)
-        {
-            rb.AddRelativeTorque(new Vector3(xSpin, 0f, zSpin));
-        }
-        
-        //rb.AddRelativeTorque(new Vector3(0f, 0f, 0f));
+        spin = true;
+        yield return new WaitForSeconds(2);
 
-        //cueBall.GetComponent<ConstantForce>().torque = new Vector3((xSpin * multiplier), 0, (zSpin * multiplier));
-
+        //cueBall.GetComponent<ConstantForce>().torque = new Vector3((xSpin * multiplier), 0f, (zSpin * multiplier));
         //Debug.Log(Mathf.Ceil(xSpin * multiplier));
 
         canHit = false;

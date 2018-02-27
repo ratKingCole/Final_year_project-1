@@ -82,9 +82,10 @@ public class turnManagerScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        gm = GMScript.gameMan;
         cueBall = gm.GetCueBall();
 
-        gm = GMScript.gameMan;
+        
 
         if (gm != null)
         {
@@ -337,6 +338,7 @@ public class turnManagerScript : MonoBehaviour
     public void CheckBallMovement()
     {
         int localNumOfMovingBalls = 0;
+        gm = GMScript.gameMan;
         foreach (GameObject obj in gm.GetBallList())
         {
             Rigidbody rb = obj.GetComponent<Rigidbody>();
@@ -362,7 +364,6 @@ public class turnManagerScript : MonoBehaviour
     public void SetCueBallHasHitBall(bool hasHit)
     {
         cueBallHitBall = hasHit;
-        //cueBall.GetComponent<ConstantForce>().torque = Vector3.zero;
     }
 
     public void SetInitialBallHit(GameObject obj)

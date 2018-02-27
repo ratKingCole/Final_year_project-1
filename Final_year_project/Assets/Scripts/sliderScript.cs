@@ -35,7 +35,7 @@ public class sliderScript : MonoBehaviour {
                 gm = GMScript.gameMan;
 
             poolCue = gm.GetCueObject();
-            poolCue.GetComponent<poolCue>().Fire(pwrSlider.value, xSpinSlider.value, zSpinSlider.value);
+            poolCue.GetComponent<poolCue>().CallFire(pwrSlider.value, xSpinSlider.value, zSpinSlider.value);
         }
     }
 }

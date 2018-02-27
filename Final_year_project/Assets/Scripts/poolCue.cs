@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,8 +20,15 @@ public class poolCue : MonoBehaviour {
     float speed = 150f;
     bool reset = true;
     bool canHit = true;
+    bool fireBall = false;
     Quaternion quaternion;
     float multiplier = 2000;
+
+    float xSpin1;
+    float zSpin1;
+    float pwr;
+
+    private int count = 0;
 
     // Use this for initialization
     void Start () {
@@ -59,6 +67,24 @@ public class poolCue : MonoBehaviour {
         }
     }
 
+    private void FixedUpdate()
+    {
+        if(fireBall == true)
+        {
+            Fire(pwr, xSpin1, zSpin1);
+            fireBall = false;
+        }
+    }
+
+    public void CallFire(float power, float xSpin, float zSpin)
+    {
+        pwr = power;
+        xSpin1 = xSpin;
+        zSpin1 = zSpin;
+
+        fireBall = true;
+    }
+
     public void Fire(float power, float xSpin, float zSpin)
     {
         if (canHit == true)
@@ -75,15 +101,30 @@ public class poolCue : MonoBehaviour {
         StartCoroutine(Hit(power, xSpin, zSpin));
 
     }
-    
+
+    void timer_Tick(object sender, EventArgs e)
+    {
+        count += 1;
+        Debug.Log(count);
+    }
+
     private IEnumerator Hit(float power, float xSpin, float zSpin)
     {
         yield return new WaitForSeconds(0.01f);
 
         rb.AddRelativeForce(new Vector3(0f, 0f, power), ForceMode.Impulse);
-        cueBall.GetComponent<ConstantForce>().torque = new Vector3((xSpin * multiplier), 0, (zSpin * multiplier));
 
-        Debug.Log(Mathf.Ceil(xSpin * multiplier));
+        count = 0;
+        while(count<10)
+        {
+            rb.AddRelativeTorque(new Vector3(xSpin, 0f, zSpin));
+        }
+        
+        //rb.AddRelativeTorque(new Vector3(0f, 0f, 0f));
+
+        //cueBall.GetComponent<ConstantForce>().torque = new Vector3((xSpin * multiplier), 0, (zSpin * multiplier));
+
+        //Debug.Log(Mathf.Ceil(xSpin * multiplier));
 
         canHit = false;
         playerMan.SetPlayerHit(true);

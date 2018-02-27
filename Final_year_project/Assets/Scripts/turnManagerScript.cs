@@ -362,7 +362,7 @@ public class turnManagerScript : MonoBehaviour
     public void SetCueBallHasHitBall(bool hasHit)
     {
         cueBallHitBall = hasHit;
-        cueBall.GetComponent<ConstantForce>().torque = Vector3.zero;
+        //cueBall.GetComponent<ConstantForce>().torque = Vector3.zero;
     }
 
     public void SetInitialBallHit(GameObject obj)

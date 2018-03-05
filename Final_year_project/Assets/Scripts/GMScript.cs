@@ -14,9 +14,11 @@ public class GMScript : MonoBehaviour
     ingameUIScript ui;
 
     bool firstPot = true;
+    bool isPlayer1 = true;
     bool isPlayer1Turn = true;
     bool playerHasPot = false;
     bool hasGameEnded = false;
+    bool isNetworked = false;
 
     public delegate void PotBall();
     public static event PotBall potBallEvent;
@@ -231,5 +233,25 @@ public class GMScript : MonoBehaviour
     public void SetGameEnded(bool isGameOver)
     {
         hasGameEnded = isGameOver;
+    }
+
+    public bool GetIsNetworked()
+    {
+        return isNetworked;
+    }
+
+    public void SetIsNetworked(bool _isNetworked)
+    {
+        isNetworked = _isNetworked;
+    }
+
+    public void SetIsPlayer1(bool _isPlayer1)
+    {
+        isPlayer1 = _isPlayer1;
+    }
+
+    public bool GetIsPlayer1()
+    {
+        return isPlayer1;
     }
 }

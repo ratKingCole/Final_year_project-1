@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class poolCue : MonoBehaviour {
 
@@ -16,7 +17,7 @@ public class poolCue : MonoBehaviour {
     private Vector3 cueRotOffset = new Vector3(0f, 90f, 0f);
     private Vector3 cuePosOffset = new Vector3(0f, 0.5f, -5f);
     private Vector3 ballRotation;
-    float speed = 150f;
+    float CueRotationSpeed = 150f;
     bool reset = true;
     bool canHit = true;
     Quaternion quaternion;
@@ -35,8 +36,10 @@ public class poolCue : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         cueBall = gm.GetCueBall();
         pivot = GameObject.Find("cuePivot");
+
         cue = this.gameObject;
 
         if (cueBall != null && pivot != null)
@@ -46,14 +49,20 @@ public class poolCue : MonoBehaviour {
             pivot.transform.position = new Vector3(cueBall.transform.position.x, cueBall.transform.position.y, cueBall.transform.position.z);
             transform.LookAt(cueBall.transform.position + cueRotOffset);
 
-            if (Input.GetKey(KeyCode.A))
+            if ((gm.GetIsPlayer1() && tm.GetIsPlayer1Turn()) || !gm.GetIsPlayer1() && !tm.GetIsPlayer1Turn())
             {
-                transform.RotateAround(pivot.transform.position, Vector3.up, speed * Time.deltaTime);
-            }
+                if (Input.GetKey(KeyCode.A))
+                {
+                    transform.RotateAround(pivot.transform.position, Vector3.up, CueRotationSpeed * Time.deltaTime);
 
-            if (Input.GetKey(KeyCode.D))
-            {
-                transform.RotateAround(pivot.transform.position, -Vector3.up, speed * Time.deltaTime);
+                    Debug.Log("A key press");
+                }
+
+                if (Input.GetKey(KeyCode.D))
+                {
+                    transform.RotateAround(pivot.transform.position, -Vector3.up, CueRotationSpeed * Time.deltaTime);
+                    Debug.Log("D key press");
+                }
             }
         }
     }
@@ -98,6 +107,9 @@ public class poolCue : MonoBehaviour {
             transform.LookAt(cueBall.transform.position + cueRotOffset);
         }
 
+        gm = GMScript.gameMan;
+        cue = gm.GetCueObject();
+        pivot = GameObject.Find("cuePivot");
         cue.GetComponent<MeshRenderer>().enabled = true;
         transform.position = pivot.transform.position + cuePosOffset;
         canHit = true;

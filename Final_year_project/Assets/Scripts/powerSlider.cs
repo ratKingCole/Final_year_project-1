@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class powerSlider : MonoBehaviour {
+public class powerSlider : NetworkBehaviour {
 
     GMScript gm;
+    NetworkScript nm;
+    turnManagerScript tm;
+    bool isNetworked;
     GameObject poolCue;
     public Text powerText;
     public Slider pwrSlider;
@@ -13,16 +17,21 @@ public class powerSlider : MonoBehaviour {
 
     void Start () {
         gm = GMScript.gameMan;
+        nm = NetworkScript.NetScript;
+        tm = turnManagerScript.turnManager;
         poolCue = gm.GetCueObject();
     }
 
     void Update()
     {
-        powerText.text = pwrSlider.value.ToString();
-
-        if (Input.GetKeyDown(KeyCode.F))
+        if ((gm.GetIsPlayer1() && tm.GetIsPlayer1Turn()) || !gm.GetIsPlayer1() && !tm.GetIsPlayer1Turn())
         {
-            poolCue.GetComponent<poolCue>().Fire(pwrSlider.value);
-        }
+            powerText.text = pwrSlider.value.ToString();
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                poolCue.GetComponent<poolCue>().Fire(pwrSlider.value);
+            }
+        }        
     }
 }

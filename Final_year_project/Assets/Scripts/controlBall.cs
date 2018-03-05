@@ -17,8 +17,6 @@ public class controlBall : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gm = GMScript.gameMan;
-        gm.SetCueBall(gameObject);
         rb = GetComponent<Rigidbody>();
         horizMove = 0.0f;
         vertMove = 0.0f;

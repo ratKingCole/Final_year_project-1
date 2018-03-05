@@ -38,9 +38,14 @@ public class cam : MonoBehaviour
             }
             else if (cameName == "cue")
             {
-                transform.SetParent(cues.transform);
-                cameraOffset = new Vector3(0f, 5f, 0f);
-                transform.position = new Vector3(cues.transform.position.x + cameraOffset.x, cues.transform.position.y + cameraOffset.y, cues.transform.position.z + cameraOffset.z);
+                cues = GameObject.Find("poolCue");
+                if (cues != null)
+                {
+                    transform.SetParent(cues.transform);
+                    cameraOffset = new Vector3(0f, 5f, 0f);
+                    transform.position = new Vector3(cues.transform.position.x + cameraOffset.x, cues.transform.position.y + cameraOffset.y, cues.transform.position.z + cameraOffset.z);
+                }
+
             }
             else if(cameName == "overhead")
             {

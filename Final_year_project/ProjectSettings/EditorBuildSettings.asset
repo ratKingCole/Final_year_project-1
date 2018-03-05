@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestMap1.unity
     guid: 6a8f593f617104f48b5835e65ec48870
+  - enabled: 1
+    path: Assets/Scenes/NetworkScene.unity
+    guid: c64a2f912e2bd4e4ab2a0685e056a41a

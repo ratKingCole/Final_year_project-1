@@ -9,6 +9,7 @@ TagManager:
   - blackBall
   - cueBall
   - ballSpawner
+  - Table
   layers:
   - Default
   - TransparentFX

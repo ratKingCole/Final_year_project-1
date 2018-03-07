@@ -35,6 +35,7 @@ public class networkedSpawnBalls : NetworkBehaviour
     public override void OnStartServer()
     {
         startSpot = true;
+        gm = GMScript.gameMan;
 
         if (stripesToSpawn != null && spotsToSpawn != null && blackBallPrefab != null && cueBallPrefab != null)
         {
@@ -42,11 +43,17 @@ public class networkedSpawnBalls : NetworkBehaviour
             float rowStartX = transform.position.x - ballRadius;
             float rowStartZ = transform.position.z - ballRadius;
 
-            spawnPos.z = rowStartZ - (((ballRadius * 2) * 15));
+            spawnPos.z = rowStartZ - (((ballRadius * 2) * 20));
             spawnPos.y += 0.01f;
-            Object cueBallInstantiate = Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
-            NetworkServer.Spawn((GameObject)cueBallInstantiate);
-            ballList.Add((GameObject)cueBallInstantiate);
+            GameObject cueBallInstantiate = (GameObject)Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
+            NetworkServer.Spawn(cueBallInstantiate);
+            Rigidbody cueBallRb = cueBallInstantiate.GetComponent<Rigidbody>();
+            gm.SetCueBall(cueBallInstantiate);
+            gm.SetCueBallSpawn(spawnPos);
+            cueBallRb.velocity = Vector3.zero;
+            cueBallRb.angularVelocity = Vector3.zero;
+            cueBallRb.rotation = Quaternion.Euler(Vector3.zero);
+            ballList.Add(cueBallInstantiate);
 
             spawnPos.y = transform.position.y;
             for (int i = 0; i < (rows + 1); i++)
@@ -92,6 +99,8 @@ public class networkedSpawnBalls : NetworkBehaviour
                 rowStartX += ballRadius;
                 startSpot = !startSpot;
             }
+
+            gm.SetBallList(ballList);
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class GMScript : MonoBehaviour
+public class GMScript : NetworkBehaviour
 {
     public enum Target {None, Spots, Stripes };
     public static GMScript gameMan;
@@ -14,10 +15,15 @@ public class GMScript : MonoBehaviour
     ingameUIScript ui;
 
     bool firstPot = true;
+    
     bool isPlayer1 = true;
+    [SyncVar]
     bool isPlayer1Turn = true;
+    [SyncVar]
     bool playerHasPot = false;
+    [SyncVar]
     bool hasGameEnded = false;
+    [SyncVar]
     bool isNetworked = false;
 
     public delegate void PotBall();
@@ -40,7 +46,7 @@ public class GMScript : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        playerMan = playerManager.playerMan;
+        
 
         if (gameMan == null)
         {
@@ -50,7 +56,12 @@ public class GMScript : MonoBehaviour
         {
             Destroy(this);
         }
+        
+    }
 
+    private void Start()
+    {
+        playerMan = playerManager.playerMan;
         playerMan.SetPlayer1Target(Target.None);
         playerMan.SetPlayer2Target(Target.None);
         endTurnEvent += FlipIsPlayer1TurnBool;
@@ -254,4 +265,10 @@ public class GMScript : MonoBehaviour
     {
         return isPlayer1;
     }
+
+    /* private void OnGUI()
+    {
+        GUILayout.Label("Is player 1? " + isPlayer1);
+        GUILayout.Label("Is player 1 turn?" + turnManagerScript.turnManager.GetIsPlayer1Turn());
+    } */
 }

@@ -60,10 +60,9 @@ GameObject:
   - component: {fileID: 54172566167876648}
   - component: {fileID: 114792841718214688}
   - component: {fileID: 114486811312100720}
-  - component: {fileID: 114724191609018178}
   m_Layer: 0
   m_Name: Ball_Neon_0
-  m_TagString: Untagged
+  m_TagString: cueBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -257,19 +256,6 @@ MonoBehaviour:
     i15: 140
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114724191609018178
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000014155786630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3996d03fdf90d54090730541cf41dcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  movespeed: 50
 --- !u!114 &114792841718214688
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -285,12 +271,12 @@ MonoBehaviour:
   m_SendInterval: 0.033333335
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
-  m_SyncSpin: 1
+  m_SyncSpin: 0
   m_MovementTheshold: 0.001
   m_VelocityThreshold: 0.0001
-  m_SnapThreshold: 0.01
+  m_SnapThreshold: 5
   m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
+  m_InterpolateMovement: 0.01
 --- !u!135 &135000012044124404
 SphereCollider:
   m_ObjectHideFlags: 1

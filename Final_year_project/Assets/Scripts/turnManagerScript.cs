@@ -3,8 +3,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class turnManagerScript : MonoBehaviour
+public class turnManagerScript : NetworkBehaviour
 {
 
     public static turnManagerScript turnManager;
@@ -16,39 +17,58 @@ public class turnManagerScript : MonoBehaviour
     playerManager pm;
     [SerializeField]
     ingameUIScript ui;
+    [SerializeField]
+    NetworkScript nm;
 
     [SerializeField]
     GameObject cue;
 
+    [SyncVar]
     bool isPlayer1Turn = true;
+    [SyncVar]
     bool isBreakShot = true;
+    [SyncVar]
     bool doesUserNeedToChoseColour = false;
+    [SyncVar]
     bool hasUserChosenColour = false;
 
     [SerializeField]
+    [SyncVar]
     bool hasAllBallsStoppedMovement = true;
+    [SyncVar]
     bool startOfTurn = true;
+    [SyncVar]
     bool stripeBallPotted = false;
+    [SyncVar]
     bool spotBallPotted = true;
+    [SyncVar]
     bool cueBallPotted = false;
+    [SyncVar]
     bool blackBallPotted = false;
+    [SyncVar]
     bool checkingTimerOn = false;
+    [SyncVar]
     bool cueBallHitBall = false;
+    [SyncVar]
     bool hasFoulOccured = false;
 
     [SerializeField]
     int numOfMovingBalls = 0;
 
     [SerializeField]
+    [SyncVar]
     int currentVisits = 1;
 
     [SerializeField]
+    [SyncVar]
     int visitsToBeAwardedNextTurn = 1;
 
     [SerializeField]
     int numOfColouredBalls = 14;
 
+    [SyncVar]
     int numOfSpots;
+    [SyncVar]
     int numOfStripes;
 
     [SerializeField]
@@ -82,6 +102,7 @@ public class turnManagerScript : MonoBehaviour
     {
 
         gm = GMScript.gameMan;
+        nm = NetworkScript.NetScript;
 
         if (gm != null)
         {
@@ -137,6 +158,14 @@ public class turnManagerScript : MonoBehaviour
                         ResetCueBall();
                         ResetCue();
                         ResetBallPositions();
+
+                        if(nm != null)
+                        {
+                            nm.CmdResetCueBall();
+                            nm.CmdResetCue();
+                            nm.CmdResetBallPositions();
+                        }
+
                         isPlayer1Turn = !isPlayer1Turn;
                         visitsToBeAwardedNextTurn = 2;
                     }
@@ -147,6 +176,13 @@ public class turnManagerScript : MonoBehaviour
                             ResetCueBall();
                             ResetCue();
                             ResetBallPositions();
+
+                            if (nm != null)
+                            {
+                                nm.CmdResetCueBall();
+                                nm.CmdResetCue();
+                                nm.CmdResetBallPositions();
+                            }
                         }
                         else if (cueBallPotted)
                         {
@@ -179,6 +215,7 @@ public class turnManagerScript : MonoBehaviour
                                         ui = gm.GetUIObject();
                                     }
                                     ui.EnableColourSelectText();
+
                                 }
                             }
                         }
@@ -268,6 +305,11 @@ public class turnManagerScript : MonoBehaviour
                 if (cueBallPotted)
                 {
                     ResetCueBall();
+
+                    if(nm != null)
+                    {
+                        nm.CmdResetCueBall();
+                    }
                 }
 
                 ResetCue();
@@ -281,6 +323,14 @@ public class turnManagerScript : MonoBehaviour
                 ui.UpdateTurnText();
                 ui.UpdateScoreText();
                 ui.UpdateTargetText();
+
+                if(nm != null)
+                {
+                    nm.CmdUiUpdateTurnText();
+                    nm.CmdUiUpdateScoreText();
+                    nm.CmdUiUpdateTargetText();
+                }
+
                 Debug.Log("Updating UI");
 
 
@@ -383,7 +433,7 @@ public class turnManagerScript : MonoBehaviour
         return isPlayer1Turn;
     }
 
-    private void ResetCueBall()
+    public void ResetCueBall()
     {
         GameObject cueBall = gm.GetCueBall();
         Rigidbody rb = cueBall.GetComponent<Rigidbody>();
@@ -393,7 +443,7 @@ public class turnManagerScript : MonoBehaviour
         cueBall.transform.position = gm.GetCueBallSpawn();
     }
 
-    private void ResetCue()
+    public void ResetCue()
     {
         if (cue == null)
         {
@@ -403,7 +453,7 @@ public class turnManagerScript : MonoBehaviour
         cue.GetComponent<poolCue>().ResetCue();
     }
 
-    private void ResetBallPositions()
+    public void ResetBallPositions()
     {
         List<GameObject> ballList = gm.GetBallList();
         foreach (GameObject obj in ballList)

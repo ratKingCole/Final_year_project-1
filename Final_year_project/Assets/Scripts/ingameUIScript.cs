@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class ingameUIScript : MonoBehaviour {
+public class ingameUIScript : NetworkBehaviour {
 
     GMScript gameManager;    
     playerManager playerMan;
     turnManagerScript tm;
 
+    [SyncVar]
     string player1Target;
+    [SyncVar]
     string player2Target;
 
     [SerializeField]

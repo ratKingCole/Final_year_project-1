@@ -13,10 +13,17 @@ public class cam_switcher : MonoBehaviour
     public bool update = true;
     public bool onload = true;
 
-    void Start() { }
+    GameObject table;
+    GameObject cueBall;
+    void Start() {
+
+        table = GameObject.FindGameObjectWithTag("Table");
+        
+    }
  
     void Update()
     {
+        cueBall = GMScript.gameMan.GetCueBall();
 
         if (onload)
         {
@@ -46,21 +53,22 @@ public class cam_switcher : MonoBehaviour
             update = true;
             cameraName = "overhead";
             currentCamera = cameraName;
-            moveCam(startMarker.position, new Vector3(0, 30, 0), GameObject.Find("Table").transform.position);
+            
+            moveCam(startMarker.position, new Vector3(0, 30, 0), table.transform.position);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2) || (moving && cameraName == "firstperson"))
         {
             update = true;
             cameraName = "firstperson";
             currentCamera = cameraName;
-            moveCam(startMarker.position, GameObject.Find("cueBall(Clone)").transform.position, new Vector3(0, 0, 10));
+            moveCam(startMarker.position, GMScript.gameMan.GetCueBall().transform.position, new Vector3(0, 0, 10));
         }
         if (Input.GetKeyDown(KeyCode.Alpha3) || (moving && cameraName == "thirdperson"))
         {
             update = true;
             cameraName = "thirdperson";
             currentCamera = cameraName;
-            Vector3 pos = GameObject.Find("cueBall(Clone)").transform.position;
+            Vector3 pos = cueBall.transform.position;
             Vector3 end = new Vector3(pos.x, pos.y + 5, pos.z - 5);
             moveCam(startMarker.position, end, pos);
             
@@ -70,8 +78,8 @@ public class cam_switcher : MonoBehaviour
             update = true;
             cameraName = "cue";
             currentCamera = cameraName;
-            if (GameObject.Find("cueBall(Clone)")) { 
-                Vector3 pos = GameObject.Find("cueBall(Clone)").transform.position;
+            if (cueBall) { 
+                Vector3 pos = cueBall.transform.position;
                 Vector3 end = new Vector3(pos.x, pos.y + 5, pos.z - 8);
                 moveCam(startMarker.position, end, pos);
             }
@@ -80,7 +88,7 @@ public class cam_switcher : MonoBehaviour
         {
             cameraName = "spin";
             currentCamera = cameraName;
-            Vector3 tag = GameObject.Find("Table").transform.position;
+            Vector3 tag = table.transform.position;
             Vector3 end1 = new Vector3(0, 20, -20);
             if (stage == 1) {
                 speed = 10;
@@ -93,8 +101,8 @@ public class cam_switcher : MonoBehaviour
             if(stage == 2)
             {
                 speed = 50;
-                transform.LookAt(GameObject.Find("Table").transform.position);
-                transform.RotateAround(GameObject.Find("Table").transform.position, Vector3.up, speed * Time.deltaTime);
+                transform.LookAt(table.transform.position);
+                transform.RotateAround(table.transform.position, Vector3.up, speed * Time.deltaTime);
                 moving = true;
             }
             if (transform.position.z < 0 && (transform.position.x >= 0.1 && transform.position.x <= 1))
@@ -119,7 +127,7 @@ public class cam_switcher : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha6) || (moving && cameraName == "break"))
         {
 
-            Vector3 tag = GameObject.Find("ballSpawner").transform.position;
+            Vector3 tag = GameObject.FindGameObjectWithTag("ballSpawner").transform.position;
             Vector3 end = new Vector3(tag.x, tag.y + 20, tag.z);
             speed = .1f;
             cameraName = "break";
@@ -143,11 +151,6 @@ public class cam_switcher : MonoBehaviour
             currentCamera = cameraName;
             transform.LookAt(tag);
             moveCam(startMarker.position, end, tag);
-
-
-
-
-
         }
     }
 

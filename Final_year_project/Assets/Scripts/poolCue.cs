@@ -79,6 +79,7 @@ public class poolCue : MonoBehaviour {
 
     private void BallAim(float power)
     {
+        cueBall = gm.GetCueBall();
         cueBall.transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y, 0f);
         StartCoroutine(Hit(power));
 
@@ -96,7 +97,7 @@ public class poolCue : MonoBehaviour {
 
     void TurnOffCue()
     {
-        cue.GetComponent<MeshRenderer>().enabled = false;
+        //cue.GetComponent<MeshRenderer>().enabled = false;
     }
 
     public void ResetCue()
@@ -110,7 +111,7 @@ public class poolCue : MonoBehaviour {
         gm = GMScript.gameMan;
         cue = gm.GetCueObject();
         pivot = GameObject.Find("cuePivot");
-        cue.GetComponent<MeshRenderer>().enabled = true;
+        //cue.GetComponent<MeshRenderer>().enabled = true;
         transform.position = pivot.transform.position + cuePosOffset;
         canHit = true;
     }

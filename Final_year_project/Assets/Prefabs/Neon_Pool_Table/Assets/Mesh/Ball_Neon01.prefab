@@ -60,9 +60,10 @@ GameObject:
   - component: {fileID: 54255965428367450}
   - component: {fileID: 114836577550606152}
   - component: {fileID: 114865443981088592}
+  - component: {fileID: 114243245954088982}
   m_Layer: 0
   m_Name: Ball_Neon01
-  m_TagString: Untagged
+  m_TagString: spotBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -199,14 +200,14 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013890009248}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 0.3
+  m_Drag: 0.5
+  m_AngularDrag: 0.4
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!95 &95000012999692802
 Animator:
   serializedVersion: 3
@@ -224,6 +225,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114243245954088982
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013890009248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c20e0e0bb5f60b6418599d514f2de8ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  startTurnPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &114836577550606152
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -236,14 +250,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
-  m_SendInterval: 0.033333335
+  m_SendInterval: 0
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
-  m_SyncSpin: 0
+  m_SyncSpin: 1
   m_MovementTheshold: 0.001
   m_VelocityThreshold: 0.0001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
+  m_SnapThreshold: 0.01
+  m_InterpolateRotation: 0.01
   m_InterpolateMovement: 0.01
 --- !u!114 &114865443981088592
 MonoBehaviour:
@@ -276,14 +290,14 @@ MonoBehaviour:
     i14: 167
     i15: 121
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
+  m_LocalPlayerAuthority: 1
 --- !u!135 &135000012818203414
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011485657762}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f22882714a053984fb841dba443d2ef6, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -295,7 +309,7 @@ SphereCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013813543266}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f22882714a053984fb841dba443d2ef6, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

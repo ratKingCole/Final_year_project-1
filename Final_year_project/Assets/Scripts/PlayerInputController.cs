@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -9,146 +10,248 @@ public class PlayerInputController : NetworkBehaviour
     [SerializeField]
     float CueRotationSpeed = 150f;
 
+    private Vector3 cueRotOffset = new Vector3(0f, 0f, 0f);
+    private Vector3 cuePosOffset = new Vector3(0f, 0.5f, -2.5f);
+
     [SerializeField]
     NetworkScript nm;
 
     [SerializeField]
     turnManagerScript tm;
 
-    [SyncVar (hook ="OnKeycodeDChange")]
-    bool keycodeDPressed = false;
 
-    [SyncVar (hook = "OnKeycodeAChange")]
-    bool keycodeAPressed = false;
-
-    [SyncVar(hook = "OnKeycodeFReleased")]
-    bool keycodeFReleased = false;
+    public static PlayerInputController Local { get; private set; }
 
     // Use this for initialization
     void Start()
     {
-        nm = NetworkScript.NetScript;
-        tm = turnManagerScript.turnManager;
+        try
+        {
+            nm = NetworkScript.NetScript;
+            tm = turnManagerScript.turnManager;
+        }
+        catch { }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SyncIsPlayer1Turn(bool _value)
     {
-        /*f(!isLocalPlayer)
-        {
-            return;
-        }*/
-
-        GMScript gm = GMScript.gameMan;
-
-
-        Debug.Log("Is Player 1? " + gm.GetIsPlayer1());
-        Debug.Log("Is Player 1 turn? " + gm.GetIsPlayer1Turn());
-        if ((gm.GetIsPlayer1() && tm.GetIsPlayer1Turn()) || (!gm.GetIsPlayer1() && !tm.GetIsPlayer1Turn()))
-        {
-            GetCueInput();
-            GetFireInput();
-        }       
-
+        PlayerInputController.Local.Cmd_AssignLocalAuthority(turnManagerScript.turnManager.gameObject);
+        PlayerInputController.Local.Cmd_SyncIsPlayer1Turn(_value, netId);
+        PlayerInputController.Local.Cmd_RemoveLocalAuthority(turnManagerScript.turnManager.gameObject);
     }
 
-    void GetCueInput()
+    public void SyncRemainingBalls(int spotsRemaining, int stripesRemaining)
     {
-
-        GameObject pivot = GameObject.Find("cuePivot");
-        GMScript gm = GMScript.gameMan;
-        GameObject cue = gm.GetCueObject();
-        Debug.Log("Checking for input");
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Cmd_SetKeycodeAPressed(true);
-            Debug.Log("A key press");
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            Cmd_SetKeycodeDPressed(true);
-            Debug.Log("D key press");
-        }
-
-        if(Input.GetKeyUp(KeyCode.D))
-        {
-            Cmd_SetKeycodeDPressed(false);
-        }
-
-        if(Input.GetKeyUp(KeyCode.A))
-        {
-            Cmd_SetKeycodeAPressed(false);
-        }
-
+        PlayerInputController.Local.Cmd_AssignLocalAuthority(turnManagerScript.turnManager.gameObject);
+        PlayerInputController.Local.Cmd_SyncRemainingBalls(spotsRemaining, stripesRemaining, netId);
+        PlayerInputController.Local.Cmd_RemoveLocalAuthority(turnManagerScript.turnManager.gameObject);
     }
 
-    void GetFireInput()
+    public void SyncBallPositions()
     {
-        if (Input.GetKeyUp(KeyCode.F))
+
+        GameObject[] spottedBalls = GameObject.FindGameObjectsWithTag("spotBall");
+        GameObject[] stripeBall = GameObject.FindGameObjectsWithTag("stripeBall");
+        GameObject blackBall = GameObject.FindGameObjectWithTag("blackBall");
+        GameObject cueBall = GameObject.FindGameObjectWithTag("cueBall");
+
+        List<GameObject> balls = new List<GameObject>();
+        foreach (GameObject ball in spottedBalls)
         {
-            Cmd_SetKeycodeFReleased(true);
+            balls.Add(ball);
+        }
+
+        foreach (GameObject ball in stripeBall)
+        {
+            balls.Add(ball);
+        }
+
+        balls.Add(blackBall);
+        balls.Add(cueBall);
+
+        foreach (GameObject ball in balls)
+        {
+            ball ballScript = ball.GetComponent<ball>();
+            PlayerInputController.Local.Cmd_AssignLocalAuthority(ball);
+            PlayerInputController.Local.Cmd_UpdateBallPosition(ball, ball.transform.position, netId);
+            PlayerInputController.Local.Cmd_RemoveLocalAuthority(ball);
         }
     }
 
-    void OnKeycodeAChange(bool value)
+    public void SyncPlayerTargets()
     {
-        keycodeAPressed = value;
-        if (keycodeAPressed)
+
+        int player1TargetInt, player2TargetInt;
+        GMScript.Target player1Target = playerManager.playerMan.GetPlayer1Target();
+        GMScript.Target player2Target = playerManager.playerMan.GetPlayer2Target();
+
+        if(player1Target == GMScript.Target.Spots)
         {
-            GMScript gm = GMScript.gameMan;
-            GameObject pivot = GameObject.Find("cuePivot");
-            GameObject cue = gm.GetCueObject();
-            cue.transform.RotateAround(pivot.transform.position, Vector3.up, CueRotationSpeed * Time.deltaTime);
+            player1TargetInt = 0;
+        }else if(player1Target == GMScript.Target.Stripes)
+        {
+            player1TargetInt = 1;
+        }else
+        {
+            player1TargetInt = 2;
         }
+
+        if (player2Target == GMScript.Target.Spots)
+        {
+            player2TargetInt = 0;
+        }
+        else if (player2Target == GMScript.Target.Stripes)
+        {
+            player2TargetInt = 1;
+        }
+        else
+        {
+            player2TargetInt = 2;
+        }
+
+        PlayerInputController.Local.Cmd_AssignLocalAuthority(playerManager.playerMan.gameObject);
+        PlayerInputController.Local.Cmd_SyncPlayerTargets(player1TargetInt, player2TargetInt, netId);
+        PlayerInputController.Local.Cmd_RemoveLocalAuthority(playerManager.playerMan.gameObject);
     }
 
-    void OnKeycodeDChange(bool value)
+    public void SyncNumberOfVisits(int _visits)
     {
-        keycodeDPressed = value;
-        if (keycodeDPressed)
-        {
-            GMScript gm = GMScript.gameMan;
-            GameObject pivot = GameObject.Find("cuePivot");
-            GameObject cue = gm.GetCueObject();
-            cue.transform.RotateAround(pivot.transform.position, -Vector3.up, CueRotationSpeed * Time.deltaTime);
-        }
+        PlayerInputController.Local.Cmd_AssignLocalAuthority(playerManager.playerMan.gameObject);
+        PlayerInputController.Local.Cmd_SyncNumberOfVisits(_visits, netId);
+        PlayerInputController.Local.Cmd_RemoveLocalAuthority(playerManager.playerMan.gameObject);
     }
 
-    void OnKeycodeFReleased(bool value)
+    [Command]
+    private void Cmd_UpdateBallPosition(GameObject ball, Vector3 position, NetworkInstanceId _netId)
     {
-        keycodeFReleased = value;
-        if (keycodeFReleased == true)
+        NetworkServer.FindLocalObject(_netId).GetComponent<PlayerInputController>().Rpc_UpdateBallPosition(ball, position);
+    }
+
+    [ClientRpc]
+    private void Rpc_UpdateBallPosition(GameObject ball, Vector3 position)
+    {
+        ball.transform.position = position;
+        Rigidbody rb = ball.GetComponent<Rigidbody>();
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        if(ball.CompareTag("cueBall"))
         {
-            GameObject poolCue = GMScript.gameMan.GetCueObject();
-            poolCue.GetComponent<poolCue>().Fire(powerSlider._powerSlider.GetSliderValue());
+            GameObject cue = GameObject.FindGameObjectWithTag("poolCue");
+            cue.GetComponent<poolCue>().ResetCue();
         }
     }
 
     [Command]
-    void Cmd_SetKeycodeAPressed(bool _keycodeAPressed)
+    public void Cmd_AssignLocalAuthority(GameObject obj)
     {
-        keycodeAPressed = _keycodeAPressed;
+        NetworkInstanceId nIns = obj.GetComponent<NetworkIdentity>().netId;
+        GameObject client = NetworkServer.FindLocalObject(nIns);
+        NetworkIdentity ni = client.GetComponent<NetworkIdentity>();
+        ni.AssignClientAuthority(connectionToClient);
     }
 
     [Command]
-    void Cmd_SetKeycodeDPressed(bool _keycodeDPressed)
+    public void Cmd_RemoveLocalAuthority(GameObject obj)
     {
-        keycodeDPressed = _keycodeDPressed;
+        NetworkInstanceId nIns = obj.GetComponent<NetworkIdentity>().netId;
+        GameObject client = NetworkServer.FindLocalObject(nIns);
+        NetworkIdentity ni = client.GetComponent<NetworkIdentity>();
+        ni.RemoveClientAuthority(ni.clientAuthorityOwner);
     }
 
     [Command]
-    void Cmd_SetKeycodeFReleased(bool _keycodeRReleased)
+    public void Cmd_SyncIsPlayer1Turn(bool _value, NetworkInstanceId _netId)
     {
-        keycodeFReleased = _keycodeRReleased;
+        NetworkServer.FindLocalObject(_netId).GetComponent<PlayerInputController>().Rpc_SyncIsPlayer1Turn(_value);
     }
 
-    
-
-    private void OnGUI()
+    [ClientRpc]
+    public void Rpc_SyncIsPlayer1Turn(bool _value)
     {
-
-        GUILayout.Label("Is accepting input?" + ((GMScript.gameMan.GetIsPlayer1() && tm.GetIsPlayer1Turn()) || (!GMScript.gameMan.GetIsPlayer1() && !tm.GetIsPlayer1Turn())));
+        turnManagerScript.turnManager.isPlayer1Turn = _value;
+        Debug.Log("Setting isPlayer1Turn: " + _value);
     }
+
+    [Command]
+    public void Cmd_SyncRemainingBalls(int spotsRemaining, int stripesRemaining, NetworkInstanceId _netId)
+    {
+        NetworkServer.FindLocalObject(_netId).GetComponent<PlayerInputController>().Rpc_SyncRemainingBalls(spotsRemaining, stripesRemaining);
+    }
+
+    [ClientRpc]
+    public void Rpc_SyncRemainingBalls(int spotsRemaining, int stripesRemaining)
+    {
+        turnManagerScript.turnManager.numOfSpots = spotsRemaining;
+        turnManagerScript.turnManager.numOfStripes = stripesRemaining;
+    }
+
+    [Command]
+    public void Cmd_SyncPlayerTargets(int player1Target, int player2Target, NetworkInstanceId _netId)
+    {
+        NetworkServer.FindLocalObject(_netId).GetComponent<PlayerInputController>().Rpc_SyncPlayerTargets(player1Target, player2Target);
+    }
+
+    [ClientRpc]
+    public void Rpc_SyncPlayerTargets(int player1Target, int player2Target)
+    {
+        switch (player1Target)
+        {
+            case 0:
+                playerManager.playerMan.SetPlayer1Target(GMScript.Target.Spots);
+                break;
+            case 1:
+                playerManager.playerMan.SetPlayer1Target(GMScript.Target.Stripes);
+                break;
+            default:
+                playerManager.playerMan.SetPlayer1Target(GMScript.Target.None);
+                break;
+        }
+
+        switch(player2Target)
+        {
+            case 0:
+                playerManager.playerMan.SetPlayer2Target(GMScript.Target.Spots);
+                break;
+            case 1:
+                playerManager.playerMan.SetPlayer2Target(GMScript.Target.Stripes);
+                break;
+            default:
+                playerManager.playerMan.SetPlayer2Target(GMScript.Target.None);
+                break;
+        }
+    }
+
+    [Command]
+    public void Cmd_SyncNumberOfVisits(int numOfVisits, NetworkInstanceId _netId)
+    {
+        NetworkServer.FindLocalObject(_netId).GetComponent<PlayerInputController>().Rpc_SyncNumberOfVisits(numOfVisits);
+    }
+
+    [ClientRpc]
+    public void Rpc_SyncNumberOfVisits(int numOfVisits)
+    {
+        turnManagerScript.turnManager.currentVisits = numOfVisits;
+    }
+
+
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartLocalPlayer();
+
+        if(Local == null)
+        {
+            Local = this;
+        }
+    }
+
+    public void OnDestroy()
+    {
+        if(Local == this)
+        {
+            Local = null;
+        }
+    }
+
+
 }

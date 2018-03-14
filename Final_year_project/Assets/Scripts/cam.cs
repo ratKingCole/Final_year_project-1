@@ -16,7 +16,13 @@ public class cam : MonoBehaviour
 
     void Update()
     {
-        ball = GameObject.Find("cueBall(Clone)");
+        try
+        {
+            ball = cueBallScript.cueBallSingleton.gameObject;
+        } catch
+        {
+            Debug.Log("cueBall singleton not found. Maybe object is not spawned yet?");
+        }
         cues = GameObject.Find("poolCue");
 
         string cameName = this.GetComponent<cam_switcher>().currentCamera;

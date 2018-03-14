@@ -21,12 +21,35 @@ public class potScript : MonoBehaviour {
     {
         string tag = collision.gameObject.tag;
         colObject = collision.gameObject;
-        tm.AddBallToPottedList(colObject);
+        turnManagerScript.turnManager.AddBallToPottedList(colObject);
 
+        Debug.Log("Ball potted: " + colObject.name);
         if(tag == "spotBall" || tag == "stripeBall" || tag == "cueBall" || tag == "blackBall")
         {
             gm.RemoveBallFromList(colObject);
             colObject.SetActive(false);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        string tag = other.gameObject.tag;
+        colObject = other.gameObject;
+        turnManagerScript.turnManager.AddBallToPottedList(colObject);
+
+        if (tag == "spotBall" || tag == "stripeBall" || tag == "cueBall" || tag == "blackBall")
+        {
+            gm.RemoveBallFromList(colObject);
+            colObject.SetActive(false);
+
+            if (tag == "spotBall")
+            {
+                //GMScript.gameMan.PottedSpotBall();
+            }
+            else if(tag == "stripeBall") {
+                //GMScript.gameMan.PottedStripeBall();
+            }
         }
     }
 }

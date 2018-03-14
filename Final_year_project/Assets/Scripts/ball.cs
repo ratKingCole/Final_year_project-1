@@ -1,30 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class ball : MonoBehaviour {
+public class ball : NetworkBehaviour {
 	public Rigidbody rb;
     //float i = 1;
 
+    private NetworkIdentity theNetID;
+
+    [SerializeField]
+    Vector3 startTurnPosition;
+
     void start(){
-		
+        startTurnPosition = transform.position;
 	}
 
-	private void hit(){
-        
-        rb.AddForce (new Vector3(0f,0f,10f), ForceMode.Impulse);
-	}
-
-    private void Update()
+    public void SetStartTurnPosition(Vector3 _pos)
     {
-        //rb = GameObject.Find("cueBall(Clone)").GetComponent<Rigidbody>();
-        //if (Input.GetKey(KeyCode.H)) Invoke("hit", 0f);
-        
+        startTurnPosition = _pos;
+    }
 
-       // if (Mathf.Abs(rb.velocity.x) < 0.01f  && Mathf.Abs(rb.velocity.y) < 0.2f && Mathf.Abs(rb.velocity.z) < 0.01f)
-           // if (Input.GetKey(KeyCode.H))
-              //  Invoke("hit", 0f);
+    public Vector3 GetStartTurnPosition()
+    {
+        //Debug.Log("Returning : " + startTurnPosition);
+        return startTurnPosition;
+    }
+
+    public override void OnStartLocalPlayer()
+    {
         
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
 
     }
+
 }

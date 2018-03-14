@@ -29,24 +29,26 @@ public class NetworkedSpawnBalls : NetworkBehaviour
                                      new int[] {0, 1, 0, 0, 1}
                                      };
 
-    List<GameObject> ballList;
+    List<GameObject> ballList = new List<GameObject>();
 
     public override void OnStartServer()
     {
         startSpot = true;
         
-        if (stripesToSpawn != null && spotsToSpawn != null && blackBallPrefab != null && cueBallPrefab != null)
+        
+        if (stripesToSpawn.Count > 0 && spotsToSpawn.Count > 0 && blackBallPrefab != null && cueBallPrefab != null)
         {
             Vector3 spawnPos = transform.position;
             float rowStartX = transform.position.x - ballRadius;
             float rowStartZ = transform.position.z - ballRadius;
 
-            spawnPos.z = rowStartZ - (((ballRadius * 2) * 15));
+            spawnPos.z = rowStartZ - (((ballRadius * 2) * 20));
             spawnPos.y += 0.01f;
-            Object cueBallInstantiate = Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
-            NetworkServer.Spawn((GameObject)cueBallInstantiate);
-            ballList.Add((GameObject)cueBallInstantiate);
-
+            GameObject cueBallInstantiate = Instantiate(cueBallPrefab, spawnPos, Quaternion.identity) as GameObject;
+            NetworkServer.Spawn(cueBallInstantiate);
+            ballList.Add(cueBallInstantiate);
+            GMScript.gameMan.SetCueBall(cueBallInstantiate);
+            
             spawnPos.y = transform.position.y;
             for (int i = 0; i < (rows + 1); i++)
             {
@@ -57,8 +59,10 @@ public class NetworkedSpawnBalls : NetworkBehaviour
                     if (i == 3 && j == 1)
                     {
                         GameObject obj = (GameObject)Instantiate(blackBallPrefab, spawnPos, Quaternion.identity);
+                        obj.GetComponent<ball>().SetStartTurnPosition(spawnPos);
                         NetworkServer.Spawn(obj);
                         ballList.Add(obj);
+                        
                     }
                     else
                     {
@@ -68,9 +72,11 @@ public class NetworkedSpawnBalls : NetworkBehaviour
                             {
                                 Object toSpawn = spotsToSpawn[0];
                                 GameObject obj = (GameObject)Instantiate(toSpawn, spawnPos, Quaternion.identity);
+                                obj.GetComponent<ball>().SetStartTurnPosition(spawnPos);
                                 NetworkServer.Spawn(obj);
                                 spotsToSpawn.Remove(toSpawn);
                                 ballList.Add(obj);
+                                
                             }
                         }
                         else
@@ -79,9 +85,11 @@ public class NetworkedSpawnBalls : NetworkBehaviour
                             {
                                 Object toSpawn = stripesToSpawn[0];
                                 GameObject obj = (GameObject)Instantiate(toSpawn, spawnPos, Quaternion.identity);
+                                obj.GetComponent<ball>().SetStartTurnPosition(spawnPos);
                                 NetworkServer.Spawn(obj);
                                 stripesToSpawn.Remove(toSpawn);
                                 ballList.Add(obj);
+                                
                             }
                         }
                     }
@@ -92,5 +100,7 @@ public class NetworkedSpawnBalls : NetworkBehaviour
                 startSpot = !startSpot;
             }
         }
+
+        turnManagerScript.turnManager.StartTurn();
     }
 }

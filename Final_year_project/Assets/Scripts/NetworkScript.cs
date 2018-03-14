@@ -35,6 +35,14 @@ public class NetworkScript : NetworkBehaviour {
 
     }
 
+    public override void OnStartServer()
+    {
+        gm = GMScript.gameMan;
+        gm.SetIsPlayer1(false);
+    }
+
+
+
     [Command]
     void CmdAddClient()
     {
@@ -78,11 +86,7 @@ public class NetworkScript : NetworkBehaviour {
     }
 
 
-    public override void OnStartServer()
-    {
-        gm = GMScript.gameMan;
-        gm.SetIsPlayer1(false);
-    }
+    
 
     [Command]
     public void CmdRotateCue(Vector3 _dir, float _speed)

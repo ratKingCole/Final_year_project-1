@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System;
 
 public class ingameUIScript : NetworkBehaviour {
 
@@ -47,33 +48,113 @@ public class ingameUIScript : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        UpdateScoreText();
+        UpdateTurnText();
+        UpdateTargetText();
 	}
 
     public void UpdateTargetText()
     {
         if (targetText != null)
         {
-            if (playerMan.GetPlayer1Score() >= 7)
+            if (playerManager.playerMan.GetPlayer1Score() >= 7)
             {
                 targetText.text = "You must pot the black ball";
             }
             else
             {
-                if (tm.GetIsPlayer1Turn())
+                if ((turnManagerScript.turnManager.GetIsPlayer1Turn() && GMScript.gameMan.GetIsPlayer1()) || (!turnManagerScript.turnManager.GetIsPlayer1Turn() && !GMScript.gameMan.GetIsPlayer1()))
                 {
-                    targetText.text = "You must pot " + player1Target;
+                    targetText.text = "You must pot " + GetLocalPlayerTarget();
                 } else
                 {
-                    targetText.text = "You must pot " + player2Target;
+                    targetText.text = "They must pot " + GetOtherPlayerTarget();
                 }
+            }
+        }
+    }
+
+    private string GetLocalPlayerTarget()
+    {
+        if(GMScript.gameMan.GetIsPlayer1())
+        {
+            GMScript.Target targ = playerManager.playerMan.GetPlayer1Target();
+
+            if(targ == GMScript.Target.Spots)
+            {
+                return "spots";
+            } else if(targ == GMScript.Target.Stripes)
+            {
+                return "stripes";
+            } else
+            {
+                return "either";
+            }
+
+
+        } else
+        {
+            GMScript.Target targ = playerManager.playerMan.GetPlayer2Target();
+
+            if (targ == GMScript.Target.Spots)
+            {
+                return "spots";
+            }
+            else if (targ == GMScript.Target.Stripes)
+            {
+                return "stripes";
+            }
+            else
+            {
+                return "either";
+            }
+        }
+
+    }
+
+    string GetOtherPlayerTarget()
+    {
+        if (GMScript.gameMan.GetIsPlayer1())
+        {
+            GMScript.Target targ = playerManager.playerMan.GetPlayer1Target();
+
+            if (targ == GMScript.Target.Spots)
+            {
+                return "stripes";
+            }
+            else if (targ == GMScript.Target.Stripes)
+            {
+                return "spots";
+            }
+            else
+            {
+                return "either";
+            }
+
+
+        }
+        else
+        {
+            GMScript.Target targ = playerManager.playerMan.GetPlayer2Target();
+
+            if (targ == GMScript.Target.Spots)
+            {
+                return "stripes";
+            }
+            else if (targ == GMScript.Target.Stripes)
+            {
+                return "spots";
+            }
+            else
+            {
+                return "either";
             }
         }
     }
 
     public void UpdateScoreText()
     {
-        Vector2 ballsRemaining = tm.GetBallsRemaining();
+        Vector2 ballsRemaining = turnManagerScript.turnManager.GetBallsRemaining();
         if(scoreText != null)
         {
             scoreText.text = "Spots - " + (int)ballsRemaining.x + " : " + (int)ballsRemaining.y + " - Stripes"; 
@@ -116,12 +197,12 @@ public class ingameUIScript : NetworkBehaviour {
 
     public void UpdateTurnText()
     {
-        if(tm.GetIsPlayer1Turn() == true)
+        if((turnManagerScript.turnManager.GetIsPlayer1Turn() && GMScript.gameMan.GetIsPlayer1()) || (!turnManagerScript.turnManager.GetIsPlayer1Turn() && !GMScript.gameMan.GetIsPlayer1()))
         {
-            turnText.text = "Player 1's turn";
+            turnText.text = "It is your turn!";
         } else
         {
-            turnText.text = "Player 2's turn";
+            turnText.text = "Waiting for other player to take turn";
         }
     }
 
@@ -135,5 +216,23 @@ public class ingameUIScript : NetworkBehaviour {
     {
         ingameTextObject.SetActive(true);
         colourSelectObject.SetActive(false);
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+
+        UpdateScoreText();
+        UpdateTargetText();
+        UpdateTurnText();
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        UpdateScoreText();
+        UpdateTargetText();
+        UpdateTurnText();
     }
 }

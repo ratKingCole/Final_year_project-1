@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class controlBall : MonoBehaviour
+public class controlBall : NetworkBehaviour
 {
 
     public Rigidbody rb;
@@ -27,8 +28,8 @@ public class controlBall : MonoBehaviour
     void Update()
     {
         horizMove = Input.GetAxis("Horizontal");
-        vertMove = Input.GetAxis("Vertical");
-        transform.Rotate(0, 0, 300 * Time.deltaTime);
+        vertMove = Input.GetAxis("Vertical");        
+        //transform.Rotate(0, 0, 300 * Time.deltaTime);
     }
 
     private void FixedUpdate()

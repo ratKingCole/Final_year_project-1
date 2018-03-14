@@ -10,6 +10,7 @@ TagManager:
   - cueBall
   - ballSpawner
   - Table
+  - poolCue
   layers:
   - Default
   - TransparentFX

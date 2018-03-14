@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class networkedSpawnBalls : NetworkBehaviour
+public class NetworkedSpawnBalls_Basic : NetworkBehaviour
 {
 
     [SerializeField]
@@ -35,7 +35,6 @@ public class networkedSpawnBalls : NetworkBehaviour
     public override void OnStartServer()
     {
         startSpot = true;
-        gm = GMScript.gameMan;
 
         if (stripesToSpawn != null && spotsToSpawn != null && blackBallPrefab != null && cueBallPrefab != null)
         {
@@ -48,8 +47,7 @@ public class networkedSpawnBalls : NetworkBehaviour
             GameObject cueBallInstantiate = (GameObject)Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
             NetworkServer.Spawn(cueBallInstantiate);
             Rigidbody cueBallRb = cueBallInstantiate.GetComponent<Rigidbody>();
-            gm.SetCueBall(cueBallInstantiate);
-            gm.SetCueBallSpawn(spawnPos);
+
             cueBallRb.velocity = Vector3.zero;
             cueBallRb.angularVelocity = Vector3.zero;
             cueBallRb.rotation = Quaternion.Euler(Vector3.zero);
@@ -100,7 +98,6 @@ public class networkedSpawnBalls : NetworkBehaviour
                 startSpot = !startSpot;
             }
 
-            gm.SetBallList(ballList);
         }
     }
 }

@@ -24,4 +24,19 @@ public class cushionHitDetection : MonoBehaviour {
             tm.AddBallToCushionHitList(obj);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject obj = null;
+        if(other != null)
+        {
+            obj = other.gameObject;
+        }
+
+        if(obj != null)
+        {
+            turnManagerScript.turnManager.AddBallToCushionHitList(obj);
+            Debug.Log("Ball hit cushion");
+        }
+    }
 }

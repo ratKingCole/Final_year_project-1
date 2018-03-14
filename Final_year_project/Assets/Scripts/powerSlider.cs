@@ -31,12 +31,21 @@ public class powerSlider : MonoBehaviour {
         gm = GMScript.gameMan;
         nm = NetworkScript.NetScript;
         tm = turnManagerScript.turnManager;
-        poolCue = gm.GetCueObject();
+        poolCue = GameObject.FindGameObjectWithTag("poolCue");
     }
 
     void Update()
     {
         powerText.text = pwrSlider.value.ToString();
+
+        if ((GMScript.gameMan.GetIsPlayer1() && tm.GetIsPlayer1Turn()) || (!GMScript.gameMan.GetIsPlayer1() && !tm.GetIsPlayer1Turn()))
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                poolCue = GameObject.FindGameObjectWithTag("poolCue");
+                poolCue.GetComponent<poolCue>().Fire(pwrSlider.value);
+            }
+        }
     }
 
     public float GetSliderValue()

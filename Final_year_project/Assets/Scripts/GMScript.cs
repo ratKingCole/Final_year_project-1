@@ -46,8 +46,6 @@ public class GMScript : NetworkBehaviour
     // Use this for initialization
     void Awake()
     {
-        
-
         if (gameMan == null)
         {
             gameMan = this;
@@ -55,8 +53,7 @@ public class GMScript : NetworkBehaviour
         else
         {
             Destroy(this);
-        }
-        
+        }   
     }
 
     private void Start()
@@ -92,7 +89,6 @@ public class GMScript : NetworkBehaviour
         {
             return null;
         }
-
     }
 
     public void SetCueBallSpawn(Vector3 vec3)
@@ -106,24 +102,49 @@ public class GMScript : NetworkBehaviour
     }
 
     public void PottedSpotBall()
-    {
+    {       
         if (firstPot == true)
         {
-            playerMan.AddPlayer1Score(1);
-            playerMan.SetPlayer1Target(Target.Spots);
-            playerMan.SetPlayer2Target(Target.Stripes);
-            firstPot = false;
-            SetPlayerHasPot(true);
-        } else
-        {
-            if(playerMan.GetPlayer1Target() == GMScript.Target.Spots)
+            if (isPlayer1)
             {
                 playerMan.AddPlayer1Score(1);
+                playerMan.SetPlayer1Target(Target.Spots);
+                playerMan.SetPlayer2Target(Target.Stripes);
+                firstPot = false;
                 SetPlayerHasPot(true);
-            } else
+            }
+            else {
+                playerMan.AddPlayer2Score(1);
+                playerMan.SetPlayer1Target(Target.Stripes);
+                playerMan.SetPlayer2Target(Target.Spots);
+                firstPot = false;
+                SetPlayerHasPot(true);
+            }
+        }
+        else {
+            if (isPlayer1)
             {
-                endTurnEvent();
-                Debug.Log("Oh no, you potted the wrong ball");
+                if (playerMan.GetPlayer1Target() == GMScript.Target.Spots)
+                {
+                    playerMan.AddPlayer1Score(1);
+                    SetPlayerHasPot(true);
+                }
+                else
+                {
+                    endTurnEvent();
+                    Debug.Log("Oh no, you potted the wrong ball");
+                }
+            }
+            else {
+                if(playerMan.GetPlayer2Target() == GMScript.Target.Spots)
+                {
+                    playerMan.AddPlayer2Score(1);
+                    SetPlayerHasPot(true);
+                }
+                else {
+                    endTurnEvent();
+                    Debug.Log("Oh no, you potted the wrong ball");
+                }
             }
         }
 
@@ -134,24 +155,53 @@ public class GMScript : NetworkBehaviour
     {
         if (firstPot == true)
         {
-            playerMan.AddPlayer1Score(1);
-            playerMan.SetPlayer2Target(GMScript.Target.Spots);
-            playerMan.SetPlayer1Target(GMScript.Target.Stripes);
-            firstPot = false;
-            
-        }
-        else
-        {
-            if (playerMan.GetPlayer1Target() == GMScript.Target.Stripes)
+            if (isPlayer1)
             {
                 playerMan.AddPlayer1Score(1);
+                playerMan.SetPlayer1Target(Target.Stripes);
+                playerMan.SetPlayer2Target(Target.Spots);
+                firstPot = false;
+                SetPlayerHasPot(true);
             }
             else
             {
-                Debug.Log("Oh no, you potted the wrong ball");
-                endTurnEvent();
+                playerMan.AddPlayer2Score(1);
+                playerMan.SetPlayer1Target(Target.Spots);
+                playerMan.SetPlayer2Target(Target.Stripes);
+                firstPot = false;
+                SetPlayerHasPot(true);
             }
         }
+        else
+        {
+            if (isPlayer1)
+            {
+                if (playerMan.GetPlayer1Target() == GMScript.Target.Stripes)
+                {
+                    playerMan.AddPlayer1Score(1);
+                    SetPlayerHasPot(true);
+                }
+                else
+                {
+                    endTurnEvent();
+                    Debug.Log("Oh no, you potted the wrong ball");
+                }
+            }
+            else
+            {
+                if (playerMan.GetPlayer2Target() == GMScript.Target.Stripes)
+                {
+                    playerMan.AddPlayer2Score(1);
+                    SetPlayerHasPot(true);
+                }
+                else
+                {
+                    endTurnEvent();
+                    Debug.Log("Oh no, you potted the wrong ball");
+                }
+            }
+        }
+
         potBallEvent();
     }
 
@@ -271,4 +321,32 @@ public class GMScript : NetworkBehaviour
         GUILayout.Label("Is player 1? " + isPlayer1);
         GUILayout.Label("Is player 1 turn?" + turnManagerScript.turnManager.GetIsPlayer1Turn());
     } */
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        if (gameMan == null)
+        {
+            gameMan = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+
+        if (gameMan == null)
+        {
+            gameMan = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 }

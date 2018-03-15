@@ -7,6 +7,8 @@ using UnityEngine.Networking;
 
 public class turnManagerScript : NetworkBehaviour
 {
+    GameObject cueBall;
+
 
     public static turnManagerScript turnManager;
     public float finalCheckDelay = 5.0f;
@@ -23,11 +25,8 @@ public class turnManagerScript : NetworkBehaviour
     [SerializeField]
     GameObject cue;
 
-
-    public bool isPlayer1Turn = true;
-
-    public bool isBreakShot = true;
-
+    bool isPlayer1Turn = true;
+    bool isBreakShot = true;
     bool doesUserNeedToChoseColour = false;
     bool hasUserChosenColour = false;
 
@@ -46,8 +45,7 @@ public class turnManagerScript : NetworkBehaviour
     int numOfMovingBalls = 0;
 
     [SerializeField]
-
-    public int currentVisits = 1;
+    int currentVisits = 1;
 
     [SerializeField]
     int visitsToBeAwardedNextTurn = 1;
@@ -91,7 +89,9 @@ public class turnManagerScript : NetworkBehaviour
     {
 
         gm = GMScript.gameMan;
-        nm = NetworkScript.NetScript;
+        cueBall = gm.GetCueBall();
+
+        
 
         if (gm != null)
         {
@@ -124,12 +124,17 @@ public class turnManagerScript : NetworkBehaviour
         {
             if (startOfTurn == false)
             {
+                Vector2 spotStripePottedThisTurn = GetBallsPottedThisTurn();
+                int spotsPottedThisTurn = (int)spotStripePottedThisTurn.x;
+                int stripesPottedThisTurn = (int)spotStripePottedThisTurn.y;
+
                 if (isBreakShot)
                 {
                     bool isValidBreak = false;
 
                     if (!doesUserNeedToChoseColour)
                     {
+
 
                         Vector2 spotStripePottedThisTurn = GetBallsPottedThisTurn();
                         int spotsPottedThisTurn = (int)spotStripePottedThisTurn.x;
@@ -152,6 +157,7 @@ public class turnManagerScript : NetworkBehaviour
                             ResetCueBall();
                             ResetCue();
                             ResetBallPositions();
+
                             visitsToBeAwardedNextTurn = 2;
                             currentVisits = 0;
                         }
@@ -223,10 +229,12 @@ public class turnManagerScript : NetworkBehaviour
                     if (isPlayer1Turn)
                     {
                         currentPlayerTarget = pm.GetPlayer1Target();
+
                     }
                     else
                     {
                         currentPlayerTarget = pm.GetPlayer2Target();
+
                     }
 
                     if (!doesUserNeedToChoseColour)

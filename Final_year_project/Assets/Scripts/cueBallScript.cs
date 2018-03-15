@@ -43,6 +43,13 @@ public class cueBallScript : MonoBehaviour {
             tm = turnManagerScript.turnManager;
         }
         tm.SetFirstBallHitThisTurn(collision.gameObject);
+    
+
+        if(collision != null)
+        {
+            cueBall.GetComponent<ConstantForce>().torque = Vector3.zero;
+            poolCue.spin = false;
+        }
     }
 
     public void SetSpawnPosition(Vector3 _spawn)

@@ -39,3 +39,5 @@ sysinfo.txt
 Icon?
 ehthumbs.db
 Thumbs.db
+*.ide
+Final_year_project/.vs/Final_year_project/v15/sqlite3/storage.ide

@@ -38,11 +38,17 @@ public class potScript : MonoBehaviour {
         colObject = other.gameObject;
         turnManagerScript.turnManager.AddBallToPottedList(colObject);
 
-        if (tag == "spotBall" || tag == "stripeBall" || tag == "cueBall" || tag == "blackBall")
+        Debug.Log("Ball potted: " + colObject.name);
+
+        if (colObject.CompareTag("spotBall") || colObject.CompareTag("stripeBall") || colObject.CompareTag("cueBall") || colObject.CompareTag("blackBall"))
         {
             gm.RemoveBallFromList(colObject);
-            colObject.SetActive(false);
 
+            colObject.GetComponent<Rigidbody>().useGravity = false;
+            colObject.GetComponent<Collider>().enabled = false;
+            colObject.GetComponent<MeshRenderer>().enabled = false;
+            
+            //colObject.SetActive(false);
             if (tag == "spotBall")
             {
                 //GMScript.gameMan.PottedSpotBall();

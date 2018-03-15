@@ -101,6 +101,6 @@ public class NetworkedSpawnBalls : NetworkBehaviour
             }
         }
 
-        turnManagerScript.turnManager.StartTurn();
+        
     }
 }

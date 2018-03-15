@@ -121,6 +121,13 @@ public class PlayerInputController : NetworkBehaviour
         PlayerInputController.Local.Cmd_RemoveLocalAuthority(playerManager.playerMan.gameObject);
     }
 
+    public void SyncIsBreak(bool _value)
+    {
+        PlayerInputController.Local.Cmd_AssignLocalAuthority(turnManagerScript.turnManager.gameObject);
+        PlayerInputController.Local.Cmd_SyncIsBreak(_value, netId);
+        PlayerInputController.Local.Cmd_RemoveLocalAuthority(turnManagerScript.turnManager.gameObject);
+    }
+
     [Command]
     private void Cmd_UpdateBallPosition(GameObject ball, Vector3 position, NetworkInstanceId _netId)
     {
@@ -232,6 +239,19 @@ public class PlayerInputController : NetworkBehaviour
     public void Rpc_SyncNumberOfVisits(int numOfVisits)
     {
         turnManagerScript.turnManager.currentVisits = numOfVisits;
+        Debug.Log("Setting number of visits to " + numOfVisits);
+    }
+
+    [Command]
+    public void Cmd_SyncIsBreak(bool _value, NetworkInstanceId _netId)
+    {
+        NetworkServer.FindLocalObject(_netId).GetComponent<PlayerInputController>().Rpc_SyncIsBreak(_value);
+    }
+
+    [ClientRpc]
+    public void Rpc_SyncIsBreak(bool _value)
+    {
+        turnManagerScript.turnManager.isBreakShot = _value;
     }
 
 

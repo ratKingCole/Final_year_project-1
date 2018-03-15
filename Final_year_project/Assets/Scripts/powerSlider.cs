@@ -38,7 +38,7 @@ public class powerSlider : MonoBehaviour {
     {
         powerText.text = pwrSlider.value.ToString();
 
-        if ((GMScript.gameMan.GetIsPlayer1() && tm.GetIsPlayer1Turn()) || (!GMScript.gameMan.GetIsPlayer1() && !tm.GetIsPlayer1Turn()))
+        if ((GMScript.gameMan.GetIsPlayer1() && turnManagerScript.turnManager.GetIsPlayer1Turn()) || (!GMScript.gameMan.GetIsPlayer1() && !turnManagerScript.turnManager.GetIsPlayer1Turn()))
         {
             if (Input.GetKeyDown(KeyCode.F))
             {

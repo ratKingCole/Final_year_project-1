@@ -23,10 +23,10 @@ public class turnManagerScript : NetworkBehaviour
     [SerializeField]
     GameObject cue;
 
-    [SyncVar]
+
     public bool isPlayer1Turn = true;
-    [SyncVar]
-    bool isBreakShot = true;
+
+    public bool isBreakShot = true;
 
     bool doesUserNeedToChoseColour = false;
     bool hasUserChosenColour = false;
@@ -107,7 +107,7 @@ public class turnManagerScript : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetBallList();
+        GetActiveBallList();
         if (hasAllBallsStoppedMovement == false)
         {
             if (checkingTimerOn == false)
@@ -124,109 +124,97 @@ public class turnManagerScript : NetworkBehaviour
         {
             if (startOfTurn == false)
             {
-                Vector2 spotStripePottedThisTurn = GetBallsPottedThisTurn();
-                int spotsPottedThisTurn = (int)spotStripePottedThisTurn.x;
-                int stripesPottedThisTurn = (int)spotStripePottedThisTurn.y;
-
                 if (isBreakShot)
                 {
                     bool isValidBreak = false;
 
-                    if ((stripesPottedThisTurn > 0) || (spotsPottedThisTurn > 0))
+                    if (!doesUserNeedToChoseColour)
                     {
-                        isValidBreak = true;
-                    }
 
-                    int numBallsHitCushion = ballsThatHitCushionThisTurn.Count;
-                    if (numBallsHitCushion > 4)
-                    {
-                        isValidBreak = true;
-                    }
+                        Vector2 spotStripePottedThisTurn = GetBallsPottedThisTurn();
+                        int spotsPottedThisTurn = (int)spotStripePottedThisTurn.x;
+                        int stripesPottedThisTurn = (int)spotStripePottedThisTurn.y;
 
-                    if (!isValidBreak)
-                    {
-                        Debug.Log("Invalid break: Resetting balls");
-                        ResetCueBall();
-                        ResetCue();
-                        ResetBallPositions();
-
-                        if (nm != null)
+                        if ((stripesPottedThisTurn > 0) || (spotsPottedThisTurn > 0))
                         {
-                            nm.CmdResetCueBall();
-                            nm.CmdResetCue();
-                            nm.CmdResetBallPositions();
+                            isValidBreak = true;
                         }
 
-                        visitsToBeAwardedNextTurn = 2;
-                        currentVisits = 0;
-                    }
-                    else
-                    {
-                        if (blackBallPotted)
+                        int numBallsHitCushion = ballsThatHitCushionThisTurn.Count;
+                        if (numBallsHitCushion > 4)
                         {
+                            isValidBreak = true;
+                        }
+
+                        if (!isValidBreak)
+                        {
+                            Debug.Log("Invalid break: Resetting balls");
                             ResetCueBall();
                             ResetCue();
                             ResetBallPositions();
-
-                            if (nm != null)
-                            {
-                                nm.CmdResetCueBall();
-                                nm.CmdResetCue();
-                                nm.CmdResetBallPositions();
-                            }
-                        }
-                        else if (cueBallPotted)
-                        {
                             visitsToBeAwardedNextTurn = 2;
-                            numOfSpots -= spotsPottedThisTurn;
-                            numOfStripes -= stripesPottedThisTurn;
+                            currentVisits = 0;
                         }
                         else
                         {
-                            numOfSpots -= spotsPottedThisTurn;
-                            numOfStripes -= stripesPottedThisTurn;
-
-                            if ((stripesPottedThisTurn > 0) && (spotsPottedThisTurn > 0))
+                            if (blackBallPotted)
                             {
-                                doesUserNeedToChoseColour = true;
-                                currentVisits += 1;
-                            } else
-                            {
-                                if(spotsPottedThisTurn > 0)
-                                {
-                                    if(isPlayer1Turn)
-                                    {
-                                        pm.SetPlayer1Target(GMScript.Target.Spots);
-                                        pm.SetPlayer2Target(GMScript.Target.Stripes);
-                                    } else
-                                    {
-                                        pm.SetPlayer2Target(GMScript.Target.Spots);
-                                        pm.SetPlayer1Target(GMScript.Target.Stripes);
-                                    }
+                                ResetCueBall();
+                                ResetCue();
+                                ResetBallPositions();
 
-                                    isBreakShot = false;
-                                    currentVisits += 1;
-                                }
-
-                                if(stripesPottedThisTurn > 0)
-                                {
-                                    if (isPlayer1Turn)
-                                    {
-                                        pm.SetPlayer2Target(GMScript.Target.Spots);
-                                        pm.SetPlayer1Target(GMScript.Target.Stripes);
-                                    }
-                                    else
-                                    {
-                                        pm.SetPlayer1Target(GMScript.Target.Spots);
-                                        pm.SetPlayer2Target(GMScript.Target.Stripes);
-                                    }
-
-                                    isBreakShot = false;
-                                    currentVisits += 1;
-                                }
                             }
+                            else if (cueBallPotted)
+                            {
+                                visitsToBeAwardedNextTurn = 2;
+                                currentVisits = 0;
+                            }
+                            else
+                            {
+                                if ((stripesPottedThisTurn > 0) && (spotsPottedThisTurn > 0))
+                                {
+                                    doesUserNeedToChoseColour = true;
+                                    currentVisits += 1;
+                                }
+                                else
+                                {
+                                    if (spotsPottedThisTurn > 0)
+                                    {
+                                        if (isPlayer1Turn)
+                                        {
+                                            pm.SetPlayer1Target(GMScript.Target.Spots);
+                                            pm.SetPlayer2Target(GMScript.Target.Stripes);
+                                        }
+                                        else
+                                        {
+                                            pm.SetPlayer2Target(GMScript.Target.Spots);
+                                            pm.SetPlayer1Target(GMScript.Target.Stripes);
+                                        }
 
+                                        currentVisits += 1;
+                                    }
+
+                                    if (stripesPottedThisTurn > 0)
+                                    {
+                                        if (isPlayer1Turn)
+                                        {
+                                            pm.SetPlayer2Target(GMScript.Target.Spots);
+                                            pm.SetPlayer1Target(GMScript.Target.Stripes);
+                                        }
+                                        else
+                                        {
+                                            pm.SetPlayer1Target(GMScript.Target.Spots);
+                                            pm.SetPlayer2Target(GMScript.Target.Stripes);
+                                        }
+
+                                        currentVisits += 1;
+                                    }
+                                }
+
+                                isBreakShot = false;
+                            }
                         }
+
                     }
                 }
                 else
@@ -235,101 +223,102 @@ public class turnManagerScript : NetworkBehaviour
                     if (isPlayer1Turn)
                     {
                         currentPlayerTarget = pm.GetPlayer1Target();
-
                     }
                     else
                     {
                         currentPlayerTarget = pm.GetPlayer2Target();
-
                     }
 
-                    bool doesPlayerHaveTarget = true;
-
-                    if (currentPlayerTarget == GMScript.Target.None)
+                    if (!doesUserNeedToChoseColour)
                     {
-                        doesPlayerHaveTarget = false;
-                    }
+                        Vector2 spotStripePottedThisTurn = GetBallsPottedThisTurn();
+                        int spotsPottedThisTurn = (int)spotStripePottedThisTurn.x;
+                        int stripesPottedThisTurn = (int)spotStripePottedThisTurn.y;
 
-                    if (doesPlayerHaveTarget)
-                    {
-                        bool didCueBallHitTargetColourFirst = false;
 
-                        if (currentPlayerTarget == GMScript.Target.Spots)
+                        bool doesPlayerHaveTarget = true;
+
+                        if (currentPlayerTarget == GMScript.Target.None)
                         {
-                            if (firstBallHitByCueBall.CompareTag("spotBall"))
-                            {
-                                didCueBallHitTargetColourFirst = true;
-                            }
+                            doesPlayerHaveTarget = false;
                         }
 
-                        if (currentPlayerTarget == GMScript.Target.Stripes)
+                        if (doesPlayerHaveTarget)
                         {
-                            if (firstBallHitByCueBall != null)
+                            bool didCueBallHitTargetColourFirst = false;
+
+                            if (currentPlayerTarget == GMScript.Target.Spots)
                             {
-                                if (firstBallHitByCueBall.CompareTag("stripeBall"))
+                                if (firstBallHitByCueBall != null)
                                 {
-                                    didCueBallHitTargetColourFirst = true;
-                                }
-                            } else
-                            {
-                                didCueBallHitTargetColourFirst = false;
-                            }
-                        }
-
-                        Debug.Log("Current target is: " + currentPlayerTarget);
-
-                        if (didCueBallHitTargetColourFirst)
-                        {
-                            Vector2 spotStripe = GetBallsPottedThisTurn();
-                            int spotsPotted = (int)spotStripe.x;
-                            int stripePotted = (int)spotStripe.y;
-
-                            bool didPlayerCommitFoul = HasFoulOccured();
-
-                            if (!didPlayerCommitFoul)
-                            {
-                                if (currentPlayerTarget == GMScript.Target.Spots)
-                                {
-                                    if (ballsThatHitCushionThisTurn.Count > 0 || spotsPotted > 0)
+                                    if (firstBallHitByCueBall.CompareTag("spotBall"))
                                     {
-                                        if (spotsPotted > 0 && !didPlayerCommitFoul)
+                                        didCueBallHitTargetColourFirst = true;
+                                    }
+                                }
+                            }
+
+                            if (currentPlayerTarget == GMScript.Target.Stripes)
+                            {
+                                if (firstBallHitByCueBall != null)
+                                {
+                                    if (firstBallHitByCueBall.CompareTag("stripeBall"))
+                                    {
+                                        didCueBallHitTargetColourFirst = true;
+                                    }
+                                }
+                            }
+
+                            Debug.Log("Current target is: " + currentPlayerTarget);
+
+                            if (didCueBallHitTargetColourFirst)
+                            {
+                                bool didPlayerCommitFoul = HasFoulOccured();
+
+                                if (!didPlayerCommitFoul)
+                                {
+                                    if (currentPlayerTarget == GMScript.Target.Spots)
+                                    {
+                                        if (ballsThatHitCushionThisTurn.Count > 0 || spotsPottedThisTurn > 0)
                                         {
-                                            currentVisits += 1;
+                                            if (spotsPottedThisTurn > 0 && !didPlayerCommitFoul)
+                                            {
+                                                currentVisits += 1;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (ballsThatHitCushionThisTurn.Count > 0 || stripesPottedThisTurn > 0)
+                                        {
+                                            if (stripesPottedThisTurn > 0 && !didPlayerCommitFoul)
+                                            {
+                                                currentVisits += 1;
+                                            }
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    if (ballsThatHitCushionThisTurn.Count > 0 || stripePotted > 0)
+                                    if (cueBallPotted)
                                     {
-                                        if (stripePotted > 0 && !didPlayerCommitFoul)
-                                        {
-                                            currentVisits += 1;
-                                        }
+                                        visitsToBeAwardedNextTurn = 2;
+                                        currentVisits = 0;
+                                    }
+
+                                    if (blackBallPotted)
+                                    {
+                                        ui.EndGameUI(true);
                                     }
                                 }
                             }
                             else
                             {
-                                if (cueBallPotted)
-                                {
-                                    visitsToBeAwardedNextTurn = 2;
-                                    currentVisits = 0;
-                                }
-
-                                if (blackBallPotted)
-                                {
-                                    ui.EndGameUI(true);
-                                }
+                                visitsToBeAwardedNextTurn = 2;
+                                currentVisits = 0;
                             }
                         }
-                    } else
-                    {
-                        Vector2 spotStripe = GetBallsPottedThisTurn();
-                        int spotsPotted = (int)spotStripe.x;
-                        int stripePotted = (int)spotStripe.y;
-
-                        if (!doesUserNeedToChoseColour)
+                        else
                         {
                             if ((stripesPottedThisTurn > 0) && (spotsPottedThisTurn > 0))
                             {
@@ -373,7 +362,6 @@ public class turnManagerScript : NetworkBehaviour
                                 }
                             }
                         }
-
                     }
                 }
 
@@ -381,9 +369,7 @@ public class turnManagerScript : NetworkBehaviour
                 {
                     if (hasUserChosenColour)
                     {
-                        isBreakShot = false;
                         doesUserNeedToChoseColour = false;
-
                     }
                     else
                     {
@@ -392,7 +378,6 @@ public class turnManagerScript : NetworkBehaviour
                             ui = gm.GetUIObject();
                         }
                         ui.EnableColourSelectText();
-
                     }
                 }
 
@@ -400,10 +385,11 @@ public class turnManagerScript : NetworkBehaviour
                 if (cueBallPotted)
                 {
                     ResetCueBall();
+                    currentVisits = 0;
                 }
 
                 ResetCue();
-                
+
                 if (ui == null)
                 {
                     ui = gm.GetUIObject();
@@ -413,44 +399,42 @@ public class turnManagerScript : NetworkBehaviour
                 ui.UpdateScoreText();
                 ui.UpdateTargetText();
 
-                if (nm != null)
-                {
-                    nm.CmdUiUpdateTurnText();
-                    nm.CmdUiUpdateScoreText();
-                    nm.CmdUiUpdateTargetText();
-                }
-
                 Debug.Log("Updating UI");
 
-
-                if(!doesUserNeedToChoseColour)
+                if (!doesUserNeedToChoseColour)
                 {
                     StartTurn();
                 }
-
-            } else
+            }
+            else
             {
                 GetPositionOfBallsAtStartOfTurn();
             }
         }
     }
 
-    List<GameObject> GetBallList()
+    List<GameObject> GetActiveBallList()
     {
         GameObject[] spottedBalls = GameObject.FindGameObjectsWithTag("spotBall");
         GameObject[] stripeBall = GameObject.FindGameObjectsWithTag("stripeBall");
         GameObject blackBall = GameObject.FindGameObjectWithTag("blackBall");
-        
+
 
         List<GameObject> balls = new List<GameObject>();
         foreach (GameObject ball in spottedBalls)
         {
-            balls.Add(ball);
+            if (ball.GetComponent<Collider>().enabled)
+            {
+                balls.Add(ball);
+            }
         }
 
         foreach (GameObject ball in stripeBall)
         {
-            balls.Add(ball);
+            if (ball.GetComponent<Collider>().enabled)
+            {
+                balls.Add(ball);
+            }
         }
 
         balls.Add(blackBall);
@@ -458,8 +442,7 @@ public class turnManagerScript : NetworkBehaviour
         return balls;
     }
 
-
-    public void StartTurn()
+    void StartTurn()
     {
         startOfTurn = true;
         stripeBallPotted = false;
@@ -473,6 +456,8 @@ public class turnManagerScript : NetworkBehaviour
         ballsThatHitCushionThisTurn = new List<GameObject>();
         firstBallHitByCueBall = null;
         GetPositionOfBallsAtStartOfTurn();
+        currentVisits -= 1;
+
 
         Debug.Log("Resetting turn");
         if (currentVisits <= 0)
@@ -487,23 +472,13 @@ public class turnManagerScript : NetworkBehaviour
                 player.GetComponent<PlayerInputController>().SyncRemainingBalls(numOfSpots, numOfStripes);
                 player.GetComponent<PlayerInputController>().SyncNumberOfVisits(currentVisits);
                 player.GetComponent<PlayerInputController>().SyncPlayerTargets();
-            } catch
+                player.GetComponent<PlayerInputController>().SyncIsBreak(isBreakShot);
+                player.GetComponent<PlayerInputController>().SyncBallPositions();
+            }
+            catch
             {
                 Debug.Log("Cannot find player. Maybe they have not spawned yet?");
             }
-        }
-        else
-        {
-            currentVisits -= 1;
-        }
-
-        try
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.GetComponent<PlayerInputController>().SyncBallPositions();
-        } catch
-        {
-            Debug.Log("Cannot find Player");
         }
 
         ResetCue();
@@ -529,7 +504,7 @@ public class turnManagerScript : NetworkBehaviour
     public void CheckBallMovement()
     {
         int localNumOfMovingBalls = 0;
-        foreach (GameObject obj in GetBallList())
+        foreach (GameObject obj in GetActiveBallList())
         {
             Rigidbody rb = obj.GetComponent<Rigidbody>();
             if (Mathf.Abs(rb.velocity.x) < 0.05f && Mathf.Abs(rb.velocity.y) < 0.2f && Mathf.Abs(rb.velocity.z) < 0.05f)
@@ -586,6 +561,10 @@ public class turnManagerScript : NetworkBehaviour
         rb.angularVelocity = new Vector3(0f, 0f, 0f);
         cueBall.SetActive(true);
         cueBall.transform.position = cueBallScript.cueBallSingleton.GetSpawnPosition();
+        cueBall.transform.rotation = Quaternion.Euler(Vector3.zero);
+        cueBall.GetComponent<Collider>().enabled = true;
+        cueBall.GetComponent<Rigidbody>().useGravity = true;
+        cueBall.GetComponent<MeshRenderer>().enabled = true;
     }
 
     public void ResetCue()
@@ -600,36 +579,47 @@ public class turnManagerScript : NetworkBehaviour
 
     public void ResetBallPositions()
     {
-        
-        List<GameObject> ballList = GetBallList();
+
+        List<GameObject> ballList = GetActiveBallList();
+        int _numOfSpots = 0;
+        int _numOfStripes = 0;
+
         foreach (GameObject obj in ballList)
         {
-            Vector3 _position;
 
             obj.transform.position = obj.GetComponent<ball>().GetStartTurnPosition();
             obj.transform.rotation = Quaternion.Euler(Vector3.zero);
-            //Debug.Log("Resetting position to " + obj.GetComponent<ball>().GetStartTurnPosition());
+            obj.GetComponent<Collider>().enabled = true;
+            obj.GetComponent<Rigidbody>().useGravity = true;
+            obj.GetComponentInChildren<MeshRenderer>().enabled = true;
 
-            // TryGetValue returns a bool based on if the value is found. I use this as the condition to make sure _position is not null
-            if (postionOfBallsAtStartOfTurn.TryGetValue(obj, out _position))
+            if (obj.CompareTag("spotBall"))
             {
-                
-                
+                _numOfSpots += 1;
+            }
+
+            if (obj.CompareTag("stripeBall"))
+            {
+                _numOfStripes += 1;
             }
         }
+
+        numOfSpots = _numOfSpots;
+        numOfStripes = _numOfStripes;
 
     }
 
     private void GetPositionOfBallsAtStartOfTurn()
     {
-        List<GameObject> ballList = GetBallList();
+        List<GameObject> ballList = GetActiveBallList();
         foreach (GameObject obj in ballList)
         {
             try
             {
                 Vector3 _position = obj.transform.position;
                 obj.GetComponent<ball>().SetStartTurnPosition(_position);
-            } catch
+            }
+            catch
             {
                 Debug.Log("Problem getting ball position. Maybe ball not spawned yet?");
             }
@@ -725,9 +715,7 @@ public class turnManagerScript : NetworkBehaviour
         if (cueBallPotted)
         {
             _hasFoulOccured = true;
-
         }
-
 
         if (blackBallPotted)
         {
@@ -745,8 +733,8 @@ public class turnManagerScript : NetworkBehaviour
                     _hasFoulOccured = true;
                 }
             }
-
         }
+
         return _hasFoulOccured;
     }
 
@@ -757,15 +745,6 @@ public class turnManagerScript : NetworkBehaviour
 
     private void OnGUI()
     {
-        GUILayout.Label("IsPlayer1Turn? " + isPlayer1Turn);
-
-        try
-        {
-            GUILayout.Label("Is Player 1?" + GMScript.gameMan.GetIsPlayer1());
-        }
-        catch
-        {
-            Debug.Log("Cannot find GMScript. Maybe it has not spawned yet?");
-        }
+        GUILayout.Box("Number of remaining visits: " + currentVisits);
     }
 }

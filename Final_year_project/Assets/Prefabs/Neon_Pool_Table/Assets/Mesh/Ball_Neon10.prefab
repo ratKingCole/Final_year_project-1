@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 114446113519283832}
   - component: {fileID: 114796550619352680}
   - component: {fileID: 114289417273915454}
+  - component: {fileID: 135828578335623528}
   m_Layer: 0
   m_Name: Ball_Neon10
   m_TagString: stripeBall
@@ -389,6 +390,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.0325
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &135828578335623528
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013469216410}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0325
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &135933453355281412
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -397,7 +410,7 @@ SphereCollider:
   m_GameObject: {fileID: 1000010454686248}
   m_Material: {fileID: 13400000, guid: f22882714a053984fb841dba443d2ef6, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.0325
   m_Center: {x: 0, y: 0, z: 0}

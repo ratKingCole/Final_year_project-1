@@ -51,7 +51,7 @@ public class poolCue : MonoBehaviour {
             pivot.transform.position = new Vector3(cueBall.transform.position.x, cueBall.transform.position.y, cueBall.transform.position.z);
             transform.LookAt(cueBall.transform.position + cueRotOffset);
 
-            if ((GMScript.gameMan.GetIsPlayer1() && tm.GetIsPlayer1Turn()) || (!GMScript.gameMan.GetIsPlayer1() && !tm.GetIsPlayer1Turn()))
+            if ((GMScript.gameMan.GetIsPlayer1() && turnManagerScript.turnManager.GetIsPlayer1Turn()) || (!GMScript.gameMan.GetIsPlayer1() && !turnManagerScript.turnManager.GetIsPlayer1Turn()))
             {
                 TurnOnCue();
                 if (Input.GetKey(KeyCode.A))

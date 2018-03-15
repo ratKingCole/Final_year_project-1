@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 114020888656176362}
   - component: {fileID: 114513984331799998}
   - component: {fileID: 114009682162037290}
+  - component: {fileID: 135445931386698040}
   m_Layer: 0
   m_Name: Ball_Neon05
   m_TagString: spotBall
@@ -266,7 +267,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012927735816}
-  m_Mesh: {fileID: 4300000, guid: 3b2b6d9bc9fe46b4b81bd3a09fd4e94b, type: 3}
+  m_Mesh: {fileID: 4300000, guid: a32f07a571d22bf4cbc022e202398b4c, type: 3}
 --- !u!54 &54081957445762450
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -396,6 +397,18 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012927735816}
   m_Material: {fileID: 13400000, guid: f22882714a053984fb841dba443d2ef6, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.0325
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &135445931386698040
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013063950714}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

@@ -23,7 +23,7 @@ public class cam_switcher : MonoBehaviour
  
     void Update()
     {
-        cueBall = GMScript.gameMan.GetCueBall();
+        cueBall = GameObject.FindGameObjectWithTag("cueBall");
 
         if (onload)
         {

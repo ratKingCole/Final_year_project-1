@@ -2,18 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 using System;
 
-public class ingameUIScript : NetworkBehaviour {
+public class ingameUIScript : MonoBehaviour {
 
     GMScript gameManager;    
     playerManager playerMan;
     turnManagerScript tm;
 
-    [SyncVar]
     string player1Target;
-    [SyncVar]
     string player2Target;
 
     [SerializeField]
@@ -218,21 +215,4 @@ public class ingameUIScript : NetworkBehaviour {
         colourSelectObject.SetActive(false);
     }
 
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-
-        UpdateScoreText();
-        UpdateTargetText();
-        UpdateTurnText();
-    }
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-
-        UpdateScoreText();
-        UpdateTargetText();
-        UpdateTurnText();
-    }
 }

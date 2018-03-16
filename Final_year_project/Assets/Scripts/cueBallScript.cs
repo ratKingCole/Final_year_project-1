@@ -47,8 +47,9 @@ public class cueBallScript : MonoBehaviour {
 
         if(collision != null)
         {
+            GameObject cueBall = GameObject.FindGameObjectWithTag("cueBall");
             cueBall.GetComponent<ConstantForce>().torque = Vector3.zero;
-            poolCue.spin = false;
+            GameObject.FindGameObjectWithTag("poolCue").GetComponent<poolCue>().spin = false;
         }
     }
 

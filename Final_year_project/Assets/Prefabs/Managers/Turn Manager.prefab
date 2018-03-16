@@ -59,6 +59,7 @@ MonoBehaviour:
   nm: {fileID: 0}
   cue: {fileID: 1000011351204280, guid: 0897106860368484abe2d046e0ee38ae, type: 2}
   isPlayer1Turn: 1
+  isBreakShot: 1
   hasAllBallsStoppedMovement: 1
   numOfMovingBalls: 0
   currentVisits: 1

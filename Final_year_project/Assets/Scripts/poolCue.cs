@@ -18,7 +18,7 @@ public class poolCue : MonoBehaviour {
     private Vector3 cueRotOffset = new Vector3(0f, 0f, 0f);
     private Vector3 cuePosOffset = new Vector3(0f, 0.5f, -3.5f);
     private Vector3 ballRotation;
-    float CueRotationSpeed = 150f;
+    float CueRotationSpeed = 50f;
     bool reset = true;
     bool canHit = true;
     bool fireBall = false;
@@ -27,7 +27,7 @@ public class poolCue : MonoBehaviour {
     float zSpin1;
     float pwr;
     float multiplier = 10;
-    bool spin = false;
+    public bool spin = false;
 
     [SerializeField]
     float basePower = 5f;
@@ -39,10 +39,16 @@ public class poolCue : MonoBehaviour {
         tm = turnManagerScript.turnManager;
         gm.SetCueObject(this.gameObject);
 
-        cueBall = gm.GetCueBall();
-        pivot = GameObject.Find("cuePivot");
-        cue = this.gameObject;
-        cueBall.GetComponent<Rigidbody>().maxAngularVelocity = 0;
+        try
+        {
+            cueBall = GameObject.FindGameObjectWithTag("cueBall");
+            pivot = GameObject.Find("cuePivot");
+            cue = this.gameObject;
+            cueBall.GetComponent<Rigidbody>().maxAngularVelocity = 0;
+        } catch
+        {
+            Debug.Log("Can't find cueBall. Maybe it hasn't spawned yet?");
+        }
     }
 	
 	// Update is called once per frame
@@ -58,11 +64,25 @@ public class poolCue : MonoBehaviour {
             rb = cueBall.GetComponent<Rigidbody>();
 
             pivot.transform.position = new Vector3(cueBall.transform.position.x, cueBall.transform.position.y, cueBall.transform.position.z);
-            transform.LookAt(cueBall.transform.position + cueRotOffset);
+            transform.LookAt(cueBall.transform.position);
 
-            if ((GMScript.gameMan.GetIsPlayer1() && turnManagerScript.turnManager.GetIsPlayer1Turn()) || (!GMScript.gameMan.GetIsPlayer1() && !turnManagerScript.turnManager.GetIsPlayer1Turn()))
+            bool acceptingInput = true;
+
+            if (GMScript.gameMan.GetIsNetworked())
             {
-                TurnOnCue();
+                if ((GMScript.gameMan.GetIsPlayer1() && turnManagerScript.turnManager.GetIsPlayer1Turn()) || (!GMScript.gameMan.GetIsPlayer1() && !turnManagerScript.turnManager.GetIsPlayer1Turn()))
+                {
+                    TurnOnCue();
+                }
+                else
+                {
+                    TurnOffCue();
+                    acceptingInput = false;
+                }
+            }
+
+            if (acceptingInput)
+            {
                 if (Input.GetKey(KeyCode.A))
                 {
                     transform.RotateAround(pivot.transform.position, Vector3.up, CueRotationSpeed * Time.deltaTime);
@@ -75,9 +95,6 @@ public class poolCue : MonoBehaviour {
                     transform.RotateAround(pivot.transform.position, -Vector3.up, CueRotationSpeed * Time.deltaTime);
                     //Debug.Log("D key press");
                 }
-            } else
-            {
-                TurnOffCue();
             }
         }
     }
@@ -144,12 +161,12 @@ public class poolCue : MonoBehaviour {
 
     void TurnOffCue()
     {
-        cue.GetComponent<MeshRenderer>().enabled = false;
+        cue.GetComponentInChildren<MeshRenderer>().enabled = false;
     }
 
     void TurnOnCue()
     {
-        cue.GetComponent<MeshRenderer>().enabled = true;
+        cue.GetComponentInChildren<MeshRenderer>().enabled = true;
     }
 
     public void ResetCue()
@@ -163,7 +180,7 @@ public class poolCue : MonoBehaviour {
         gm = GMScript.gameMan;
         cue = gm.GetCueObject();
         pivot = GameObject.Find("cuePivot");
-        cue.GetComponent<MeshRenderer>().enabled = true;
+        cue.GetComponentInChildren<MeshRenderer>().enabled = true;
         transform.position = pivot.transform.position + cuePosOffset;
         canHit = true;
     }

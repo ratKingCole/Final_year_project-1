@@ -25,8 +25,8 @@ public class turnManagerScript : NetworkBehaviour
     [SerializeField]
     GameObject cue;
 
-    bool isPlayer1Turn = true;
-    bool isBreakShot = true;
+    public bool isPlayer1Turn = true;
+    public bool isBreakShot = true;
     bool doesUserNeedToChoseColour = false;
     bool hasUserChosenColour = false;
 
@@ -45,7 +45,7 @@ public class turnManagerScript : NetworkBehaviour
     int numOfMovingBalls = 0;
 
     [SerializeField]
-    int currentVisits = 1;
+    public int currentVisits = 1;
 
     [SerializeField]
     int visitsToBeAwardedNextTurn = 1;
@@ -124,10 +124,6 @@ public class turnManagerScript : NetworkBehaviour
         {
             if (startOfTurn == false)
             {
-                Vector2 spotStripePottedThisTurn = GetBallsPottedThisTurn();
-                int spotsPottedThisTurn = (int)spotStripePottedThisTurn.x;
-                int stripesPottedThisTurn = (int)spotStripePottedThisTurn.y;
-
                 if (isBreakShot)
                 {
                     bool isValidBreak = false;

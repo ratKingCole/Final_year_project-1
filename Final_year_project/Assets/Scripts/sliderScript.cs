@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class sliderScript : MonoBehaviour {
 
+    public static sliderScript _sliderScript;
+
     GMScript gm;
     GameObject poolCue;
     public Text powerText;
@@ -16,11 +18,24 @@ public class sliderScript : MonoBehaviour {
     public Text txtZValue;
     public Slider zSpinSlider;
 
-
+    private void Awake()
+    {
+        if(_sliderScript == null)
+        {
+            _sliderScript = this;
+        } else
+        {
+            Destroy(this);
+        }
+    }
 
     void Start () {
         gm = GMScript.gameMan;
-        poolCue = gm.GetCueObject();
+        poolCue = GameObject.FindGameObjectWithTag("poolCue");
+
+        powerText = pwrSlider.GetComponentInChildren<Text>();
+        txtXValue = xSpinSlider.GetComponentInChildren<Text>();
+        txtZValue = zSpinSlider.GetComponentInChildren<Text>();
     }
 
     void Update()
@@ -29,13 +44,26 @@ public class sliderScript : MonoBehaviour {
         txtXValue.text = xSpinSlider.value.ToString();
         txtZValue.text = zSpinSlider.value.ToString();
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (gm == null)
-                gm = GMScript.gameMan;
+        bool acceptingInput = true;
 
-            poolCue = gm.GetCueObject();
-            poolCue.GetComponent<poolCue>().CallFire(pwrSlider.value, xSpinSlider.value, zSpinSlider.value);
+        if (GMScript.gameMan.GetIsNetworked())
+        {
+            if (!((GMScript.gameMan.GetIsPlayer1() && turnManagerScript.turnManager.GetIsPlayer1Turn()) || (!GMScript.gameMan.GetIsPlayer1() && !turnManagerScript.turnManager.GetIsPlayer1Turn())))
+            {
+                acceptingInput = false;
+            }
+        }
+
+        if (acceptingInput)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (gm == null)
+                    gm = GMScript.gameMan;
+
+                poolCue = gm.GetCueObject();
+                poolCue.GetComponent<poolCue>().CallFire(pwrSlider.value, xSpinSlider.value, zSpinSlider.value);
+            }
         }
     }
 }

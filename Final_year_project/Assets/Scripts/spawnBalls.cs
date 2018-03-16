@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class spawnBalls : MonoBehaviour {
 
+    [SerializeField]
+    List<Object> stripesToSpawn = new List<Object>();
+    [SerializeField]
+    List<Object> spotsToSpawn = new List<Object>();
 
     public int balls = 15;
     public int rows = 5;
     public float ballRadius = 0.49f;
 
-    public Object redBallPrefab;
-    public Object yellBallPrefab;
-    public Object blackBallPrefab;
-    public Object cueBallPrefab;
+    [SerializeField]
+    Object blackBallPrefab;
+    [SerializeField]
+    Object cueBallPrefab;
    
 
     [SerializeField]
@@ -38,13 +42,13 @@ public class spawnBalls : MonoBehaviour {
     {
         startSpot = true;
         gm = GMScript.gameMan;
-        if (redBallPrefab != null && yellBallPrefab != null && blackBallPrefab != null && cueBallPrefab != null)
+        if (stripesToSpawn.Count > 0 && spotsToSpawn.Count > 0 && blackBallPrefab != null && cueBallPrefab != null)
         {
             Vector3 spawnPos = transform.position;
             float rowStartX = transform.position.x - ballRadius;
             float rowStartZ = transform.position.z - ballRadius;
 
-            spawnPos.z = rowStartZ - (((ballRadius * 2) * 15));
+            spawnPos.z = rowStartZ - (((ballRadius * 2) * 20));
             spawnPos.y += 0.01f;
             Object cueBallInstantiate = Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
             gm.SetCueBallSpawn(spawnPos);
@@ -67,12 +71,18 @@ public class spawnBalls : MonoBehaviour {
                     {
                         if (spawnArray[i-1][j] == 1)
                         {
-                            GameObject obj = (GameObject)Instantiate(redBallPrefab, spawnPos, Quaternion.identity);
+                            Object toSpawn = spotsToSpawn[0];
+                            GameObject obj = (GameObject)Instantiate(toSpawn, spawnPos, Quaternion.identity);
+                            obj.GetComponent<ball>().SetStartTurnPosition(spawnPos);
+                            spotsToSpawn.Remove(toSpawn);
                             ballList.Add(obj);
                         }
                         else
                         {
-                            GameObject obj = (GameObject)Instantiate(yellBallPrefab, spawnPos, Quaternion.identity);
+                            Object toSpawn = stripesToSpawn[0];
+                            GameObject obj = (GameObject)Instantiate(toSpawn, spawnPos, Quaternion.identity);
+                            obj.GetComponent<ball>().SetStartTurnPosition(spawnPos);
+                            stripesToSpawn.Remove(toSpawn);
                             ballList.Add(obj);
                         }
                     }

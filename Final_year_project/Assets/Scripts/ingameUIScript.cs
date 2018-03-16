@@ -5,27 +5,37 @@ using UnityEngine.UI;
 
 public class ingameUIScript : MonoBehaviour {
 
-    GMScript gameManager;
+    GMScript gameManager;    
     playerManager playerMan;
+    turnManagerScript tm;
+
     string player1Target;
     string player2Target;
 
-    public Text targetText;
-    public Text scoreText;
-    public Text endGameText;
-    public Text turnText;
+    [SerializeField]
+    private Text targetText;
+    [SerializeField]
+    private Text scoreText;
+    [SerializeField]
+    private Text endGameText;
+    [SerializeField]
+    private Text turnText;
+    [SerializeField]
+    private GameObject ingameTextObject;
+    [SerializeField]
+    private GameObject colourSelectObject;
 
 	// Use this for initialization
 	void Start () {
         gameManager = GMScript.gameMan;
         playerMan = playerManager.playerMan;
+        tm = turnManagerScript.turnManager;
+        gameManager.SetUIObject(this);
 
         GMScript.potBallEvent += GetTargets;
         GMScript.potBallEvent += UpdateScoreText;
         GMScript.potBallEvent += UpdateTargetText;
-        GMScript.endTurnEvent += UpdateTurnText;
-
-        GMScript.endGameEvent += EndGameUI;
+        
         GetTargets();
         UpdateTargetText();
         UpdateScoreText();
@@ -37,7 +47,7 @@ public class ingameUIScript : MonoBehaviour {
 		
 	}
 
-    void UpdateTargetText()
+    public void UpdateTargetText()
     {
         if (targetText != null)
         {
@@ -47,16 +57,23 @@ public class ingameUIScript : MonoBehaviour {
             }
             else
             {
-                targetText.text = "You must pot " + player1Target;
+                if (tm.GetIsPlayer1Turn())
+                {
+                    targetText.text = "You must pot " + player1Target;
+                } else
+                {
+                    targetText.text = "You must pot " + player2Target;
+                }
             }
         }
     }
 
-    void UpdateScoreText()
+    public void UpdateScoreText()
     {
+        Vector2 ballsRemaining = tm.GetBallsRemaining();
         if(scoreText != null)
         {
-            scoreText.text = "Score: " + playerMan.GetPlayer1Score(); 
+            scoreText.text = "Spots - " + (int)ballsRemaining.x + " : " + (int)ballsRemaining.y + " - Stripes"; 
         }
     }
 
@@ -80,27 +97,40 @@ public class ingameUIScript : MonoBehaviour {
         }
     }
 
-    public void EndGameUI()
+    public void EndGameUI(bool isWin)
     {
-        if(playerMan.GetPlayer1Score() >= 7)
+        if(isWin)
         {
-            endGameText.text = "You win!";
+            endGameText.text = "You win, congratulations!";
         } else
         {
-            endGameText.text = "You loose!";
+            endGameText.text = "You lose! :(";
         }
 
+        gameManager.SetGameEnded(true);
         endGameText.gameObject.SetActive(true);
     }
 
     public void UpdateTurnText()
     {
-        if(gameManager.GetIsPlayer1Turn() == true)
+        if(tm.GetIsPlayer1Turn() == true)
         {
             turnText.text = "Player 1's turn";
         } else
         {
             turnText.text = "Player 2's turn";
         }
+    }
+
+    public void EnableColourSelectText()
+    {
+        ingameTextObject.SetActive(false);
+        colourSelectObject.SetActive(true);
+    }
+
+    public void DisableColourSelectText()
+    {
+        ingameTextObject.SetActive(true);
+        colourSelectObject.SetActive(false);
     }
 }

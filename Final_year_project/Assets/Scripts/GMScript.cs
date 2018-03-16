@@ -8,11 +8,15 @@ public class GMScript : MonoBehaviour
     public static GMScript gameMan;
 
     GameObject cueBall;
+    [SerializeField]
+    GameObject cue;
     Vector3 cueBallSpawn;
+    ingameUIScript ui;
 
     bool firstPot = true;
     bool isPlayer1Turn = true;
     bool playerHasPot = false;
+    bool hasGameEnded = false;
 
     public delegate void PotBall();
     public static event PotBall potBallEvent;
@@ -27,6 +31,9 @@ public class GMScript : MonoBehaviour
     public static event EndTurn endTurnEvent;
 
     playerManager playerMan;
+
+    [SerializeField]
+    List<GameObject> ballList = new List<GameObject>();
 
     // Use this for initialization
     void Awake()
@@ -57,11 +64,22 @@ public class GMScript : MonoBehaviour
     public void SetCueBall(GameObject obj)
     {
         cueBall = obj;
+        if(cue != null)
+        {
+            cue.GetComponent<poolCue>().ResetCue();
+        }
     }
 
     public GameObject GetCueBall()
     {
-        return cueBall;
+        if (cueBall != null)
+        {
+            return cueBall;
+        } else
+        {
+            return null;
+        }
+
     }
 
     public void SetCueBallSpawn(Vector3 vec3)
@@ -167,5 +185,51 @@ public class GMScript : MonoBehaviour
     public void CallEndTurnEvent()
     {
         endTurnEvent();
+    }
+
+    public void SetUIObject(ingameUIScript ui)
+    {
+        this.ui = ui;
+    }
+
+    public ingameUIScript GetUIObject()
+    {
+        if (ui != null)
+        {
+            return ui;
+        } else
+        {
+            return null;
+        }
+    }
+
+    public void SetBallList(List<GameObject> list)
+    {
+        ballList = list;
+    }
+
+    public List<GameObject> GetBallList()
+    {
+        return ballList;
+    }
+
+    public void SetCueObject(GameObject obj)
+    {
+        cue = obj;
+    }
+
+    public void RemoveBallFromList(GameObject obj)
+    {
+        ballList.Remove(obj);
+    }
+
+    public GameObject GetCueObject()
+    {
+        return cue;
+    }
+
+    public void SetGameEnded(bool isGameOver)
+    {
+        hasGameEnded = isGameOver;
     }
 }

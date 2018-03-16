@@ -14,7 +14,8 @@ public class spawnBalls : MonoBehaviour {
     public Object blackBallPrefab;
     public Object cueBallPrefab;
 
-
+    [SerializeField]
+    float ballSpawnDelay = 1.0f;
     bool startSpot;
     GMScript gm;
     int[][] spawnArray = new int[][] {
@@ -24,11 +25,12 @@ public class spawnBalls : MonoBehaviour {
                                      new int[] {1, 1, 0, 0},
                                      new int[] {0, 1, 0, 0, 1}
                                      };
+
+    List<GameObject> ballList;
 	// Use this for initialization
 	void Start () {
-        
-        Invoke("RackBalls", 1.0f);
-
+        ballList = new List<GameObject>();
+        Invoke("RackBalls", ballSpawnDelay);
 	}
 
     void RackBalls()
@@ -43,8 +45,10 @@ public class spawnBalls : MonoBehaviour {
 
             spawnPos.z = rowStartZ - (((ballRadius * 2) * 15));
             spawnPos.y += 0.01f;
-            Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
+            Object cueBallInstantiate = Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
             gm.SetCueBallSpawn(spawnPos);
+            gm.SetCueBall((GameObject)cueBallInstantiate);
+            ballList.Add((GameObject)cueBallInstantiate);
 
             spawnPos.y = transform.position.y;
             for (int i = 0; i < (rows+1); i++)
@@ -55,17 +59,20 @@ public class spawnBalls : MonoBehaviour {
                     spawnPos.z = rowStartZ;
                     if (i == 3 && j == 1)
                     {
-                        Instantiate(blackBallPrefab, spawnPos, Quaternion.identity);
+                        GameObject obj = (GameObject)Instantiate(blackBallPrefab, spawnPos, Quaternion.identity);
+                        ballList.Add(obj);
                     }
                     else
                     {
                         if (spawnArray[i-1][j] == 1)
                         {
-                            Instantiate(redBallPrefab, spawnPos, Quaternion.identity);                            
+                            GameObject obj = (GameObject)Instantiate(redBallPrefab, spawnPos, Quaternion.identity);
+                            ballList.Add(obj);
                         }
                         else
                         {
-                            Instantiate(yellBallPrefab, spawnPos, Quaternion.identity);                            
+                            GameObject obj = (GameObject)Instantiate(yellBallPrefab, spawnPos, Quaternion.identity);
+                            ballList.Add(obj);
                         }
                     }
                 }
@@ -74,6 +81,9 @@ public class spawnBalls : MonoBehaviour {
                 rowStartX += ballRadius;
                 startSpot = !startSpot;
             }
+
+            gm.SetBallList(ballList);
+
         }
     }
 }

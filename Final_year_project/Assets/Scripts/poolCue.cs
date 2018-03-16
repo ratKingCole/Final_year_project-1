@@ -6,6 +6,7 @@ public class poolCue : MonoBehaviour {
 
     playerManager playerMan;
     GMScript gm;
+    turnManagerScript tm;
     GameObject cueBall;
     GameObject pivot;
     GameObject cue;
@@ -24,13 +25,19 @@ public class poolCue : MonoBehaviour {
     void Start () {
         playerMan = playerManager.playerMan;
         gm = GMScript.gameMan;
+        tm = turnManagerScript.turnManager;
+        gm.SetCueObject(this.gameObject);
+
+        cueBall = gm.GetCueBall();
+        pivot = GameObject.Find("cuePivot");
+        cue = this.gameObject;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        cueBall = GameObject.Find("cueBall(Clone)");
+        cueBall = gm.GetCueBall();
         pivot = GameObject.Find("cuePivot");
-        cue = GameObject.Find("poolCue");
+        cue = this.gameObject;
 
         if (cueBall != null && pivot != null)
         {
@@ -38,28 +45,6 @@ public class poolCue : MonoBehaviour {
 
             pivot.transform.position = new Vector3(cueBall.transform.position.x, cueBall.transform.position.y, cueBall.transform.position.z);
             transform.LookAt(cueBall.transform.position + cueRotOffset);
-
-            if (reset == true)
-            {
-                if (Mathf.Abs(rb.velocity.x) < 0.01f && Mathf.Abs(rb.velocity.y) < 0.2f && Mathf.Abs(rb.velocity.z) < 0.01f)
-                {
-                    cue.GetComponent<MeshRenderer>().enabled = true;
-                    transform.position = pivot.transform.position + cuePosOffset;
-                    reset = false;
-                    canHit = true;
-
-                    if(gm.GetPlayerHasPot() == false)
-                    {
-                        gm.CallEndTurnEvent();
-                    }
-                }
-                else
-                {
-                    cue.GetComponent<MeshRenderer>().enabled = false;
-                    reset = true;
-                    canHit = false;
-                }
-            }
 
             if (Input.GetKey(KeyCode.A))
             {
@@ -77,7 +62,7 @@ public class poolCue : MonoBehaviour {
     {
         if (canHit == true)
         {
-            cue.GetComponent<MeshRenderer>().enabled = false;
+            TurnOffCue();
             BallAim(power);
 
         }
@@ -87,14 +72,34 @@ public class poolCue : MonoBehaviour {
     {
         cueBall.transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y, 0f);
         StartCoroutine(Hit(power));
+
     }
     
-    private IEnumerator Hit(float power)
+    public IEnumerator Hit(float power)
     {
         yield return new WaitForSeconds(0.01f);
 
         rb.AddRelativeForce(new Vector3(0f, 0f, power), ForceMode.Impulse);
-        reset = true;
+        canHit = false;
         playerMan.SetPlayerHit(true);
+        tm.CueBallHit();
+    }
+
+    void TurnOffCue()
+    {
+        cue.GetComponent<MeshRenderer>().enabled = false;
+    }
+
+    public void ResetCue()
+    {
+        if (cueBall != null && pivot != null)
+        {
+            pivot.transform.position = new Vector3(cueBall.transform.position.x, cueBall.transform.position.y, cueBall.transform.position.z);
+            transform.LookAt(cueBall.transform.position + cueRotOffset);
+        }
+
+        cue.GetComponent<MeshRenderer>().enabled = true;
+        transform.position = pivot.transform.position + cuePosOffset;
+        canHit = true;
     }
 }

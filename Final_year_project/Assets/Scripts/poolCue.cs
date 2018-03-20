@@ -143,7 +143,7 @@ public class poolCue : MonoBehaviour {
 
     }
 
-    private IEnumerator Hit(float power, float xSpin, float zSpin)
+    public IEnumerator Hit(float power, float xSpin, float zSpin)
     {
         yield return new WaitForSeconds(0.01f);
         rb.AddRelativeForce(new Vector3(0f, 0f, power), ForceMode.Impulse);

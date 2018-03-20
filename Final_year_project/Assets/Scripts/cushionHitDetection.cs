@@ -36,7 +36,7 @@ public class cushionHitDetection : MonoBehaviour {
         if(obj != null)
         {
             turnManagerScript.turnManager.AddBallToCushionHitList(obj);
-            Debug.Log("Ball hit cushion");
+            //Debug.Log("Ball hit cushion");
         }
     }
 }

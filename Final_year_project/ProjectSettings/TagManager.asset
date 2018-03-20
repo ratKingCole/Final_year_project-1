@@ -11,6 +11,8 @@ TagManager:
   - ballSpawner
   - Table
   - poolCue
+  - table_component
+  - Pocket
   layers:
   - Default
   - TransparentFX

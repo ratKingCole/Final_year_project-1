@@ -10,6 +10,8 @@ public class cueBallScript : MonoBehaviour {
     GMScript gm;
     turnManagerScript tm;
     Vector3 spawnPosition;
+    GameObject cueBall;
+    GameObject pC;
 
 
     private void Awake()
@@ -29,6 +31,9 @@ public class cueBallScript : MonoBehaviour {
 
         gm.SetCueBall(this.gameObject);
         spawnPosition = gameObject.transform.position;
+
+        cueBall = gm.GetCueBall();
+        pC = gm.GetCueObject();
     }
 	
 	// Update is called once per frame
@@ -47,6 +52,7 @@ public class cueBallScript : MonoBehaviour {
 
         if(collision != null)
         {
+            GetComponent<poolCue>().FricCollision();
             GameObject cueBall = GameObject.FindGameObjectWithTag("cueBall");
             cueBall.GetComponent<ConstantForce>().torque = Vector3.zero;
             GameObject.FindGameObjectWithTag("poolCue").GetComponent<poolCue>().spin = false;

@@ -569,6 +569,8 @@ public class turnManagerScript : NetworkBehaviour
         cueBall.GetComponent<Collider>().enabled = true;
         cueBall.GetComponent<Rigidbody>().useGravity = true;
         cueBall.GetComponent<MeshRenderer>().enabled = true;
+
+        poolCue.cueScript.StopSpin();
     }
 
     public void ResetCue()
@@ -578,7 +580,7 @@ public class turnManagerScript : NetworkBehaviour
             cue = GameObject.FindGameObjectWithTag("poolCue");
         }
 
-        cue.GetComponent<poolCue>().ResetCue();
+        poolCue.cueScript.ResetCue();
     }
 
     public void ResetBallPositions()

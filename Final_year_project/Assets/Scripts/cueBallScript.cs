@@ -43,19 +43,23 @@ public class cueBallScript : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        if(tm == null)
+        if (!collision.gameObject.CompareTag("Table"))
         {
-            tm = turnManagerScript.turnManager;
-        }
-        tm.SetFirstBallHitThisTurn(collision.gameObject);
-    
+            if (tm == null)
+            {
+                tm = turnManagerScript.turnManager;
+            }
+            tm.SetFirstBallHitThisTurn(collision.gameObject);
 
-        if(collision != null)
-        {
-            GetComponent<poolCue>().FricCollision();
-            GameObject cueBall = GameObject.FindGameObjectWithTag("cueBall");
-            cueBall.GetComponent<ConstantForce>().torque = Vector3.zero;
-            GameObject.FindGameObjectWithTag("poolCue").GetComponent<poolCue>().spin = false;
+
+            if (collision != null)
+            {
+                GameObject cue = GameObject.FindGameObjectWithTag("poolCue");
+                cue.GetComponent<poolCue>().FricCollision();
+                GameObject cueBall = GameObject.FindGameObjectWithTag("cueBall");
+                cueBall.GetComponent<ConstantForce>().torque = Vector3.zero;
+                GameObject.FindGameObjectWithTag("poolCue").GetComponent<poolCue>().spin = false;
+            }
         }
     }
 

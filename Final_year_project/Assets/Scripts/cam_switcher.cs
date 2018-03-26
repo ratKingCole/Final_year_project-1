@@ -48,6 +48,7 @@ public class cam_switcher : MonoBehaviour
             cameraName = "";
             stage = 1;
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha1) || (moving && cameraName == "overhead"))
         {
             update = true;

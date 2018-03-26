@@ -56,7 +56,7 @@ public class sliderScript : MonoBehaviour {
 
         if (acceptingInput)
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (gm == null)
                     gm = GMScript.gameMan;

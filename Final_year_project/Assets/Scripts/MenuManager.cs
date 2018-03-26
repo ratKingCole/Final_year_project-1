@@ -8,6 +8,8 @@ public class MenuManager : MonoBehaviour {
     public GameObject MainMenu;
     public GameObject PlayMenu;
     public GameObject SettingsMenu;
+    public GameObject ResolutionMenu;
+    public GameObject ControlsMenu;
 
     public void TurnOnMainMenu()
     {
@@ -37,5 +39,25 @@ public class MenuManager : MonoBehaviour {
     public void TurnOffSettingsMenu()
     {
         SettingsMenu.SetActive(false);
+    }
+
+    public void TurnOnControlsMenu()
+    {
+        ControlsMenu.SetActive(true);
+    }
+
+    public void TurnOffControlsMenu()
+    {
+        ControlsMenu.SetActive(false);
+    }
+
+    public void TurnOnResoluionMenu()
+    {
+        ResolutionMenu.SetActive(true);
+    }
+
+    public void TurnOffResolutionMenu()
+    {
+        ResolutionMenu.SetActive(false);
     }
 }

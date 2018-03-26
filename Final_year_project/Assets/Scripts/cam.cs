@@ -23,7 +23,7 @@ public class cam : MonoBehaviour
         {
             Debug.Log("cueBall singleton not found. Maybe object is not spawned yet?");
         }
-        cues = GameObject.Find("poolCue");
+        cues = poolCue.cueScript.gameObject;
 
         string cameName = this.GetComponent<cam_switcher>().currentCamera;
         bool moving = this.GetComponent<cam_switcher>().moving;
@@ -43,14 +43,15 @@ public class cam : MonoBehaviour
 
             }
             else if (cameName == "cue")
-            {
-                cues = GameObject.Find("poolCue");
+            { 
                 if (cues != null)
                 {
                     transform.SetParent(cues.transform);
-                    cameraOffset = new Vector3(0f, 5f, 0f);
+                    cameraOffset = new Vector3(0f, 2.5f, 0f);
                     transform.position = new Vector3(cues.transform.position.x + cameraOffset.x, cues.transform.position.y + cameraOffset.y, cues.transform.position.z + cameraOffset.z);
+                    transform.localEulerAngles = new Vector3(30f, 0f, 0f);
                 }
+
 
             }
             else if(cameName == "overhead")

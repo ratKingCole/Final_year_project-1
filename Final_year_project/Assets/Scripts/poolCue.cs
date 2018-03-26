@@ -6,6 +6,8 @@ using UnityEngine.Networking;
 
 public class poolCue : MonoBehaviour {
 
+    public static poolCue cueScript;
+
     playerManager playerMan;
     GMScript gm;
     turnManagerScript tm;
@@ -26,12 +28,19 @@ public class poolCue : MonoBehaviour {
     float xSpin1;
     float zSpin1;
     float pwr;
-    float multiplier = 10;
     public bool spin = false;
     public bool fric = false;
 
     [SerializeField]
     float basePower = 5f;
+
+    private void Awake()
+    {
+        if(cueScript == null)
+        {
+            cueScript = this;
+        }
+    }
 
     // Use this for initialization
     void Start () {
@@ -46,7 +55,8 @@ public class poolCue : MonoBehaviour {
             pivot = GameObject.Find("cuePivot");
             cue = this.gameObject;
             cueBall.GetComponent<Rigidbody>().maxAngularVelocity = 0;
-        } catch
+        }
+        catch
         {
             Debug.Log("Can't find cueBall. Maybe it hasn't spawned yet?");
         }
@@ -84,20 +94,33 @@ public class poolCue : MonoBehaviour {
 
             if (acceptingInput)
             {
-                if (Input.GetKey(KeyCode.A))
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    if (Input.GetKey(KeyCode.A))
+                        transform.RotateAround(pivot.transform.position, Vector3.up, (CueRotationSpeed - 40) * Time.deltaTime);
+
+                    if (Input.GetKey(KeyCode.D))
+                        transform.RotateAround(pivot.transform.position, -Vector3.up, (CueRotationSpeed - 40) * Time.deltaTime);
+                }
+                else if (Input.GetKey(KeyCode.A))
                 {
                     transform.RotateAround(pivot.transform.position, Vector3.up, CueRotationSpeed * Time.deltaTime);
 
                     //Debug.Log("A key press");
                 }
 
-                if (Input.GetKey(KeyCode.D))
-                {
+                else if (Input.GetKey(KeyCode.D))
+                 {
                     transform.RotateAround(pivot.transform.position, -Vector3.up, CueRotationSpeed * Time.deltaTime);
                     //Debug.Log("D key press");
                 }
+
+                if (Input.GetKey(KeyCode.R))
+                    ResetCue();
+
             }
         }
+        
     }
 
     private void FixedUpdate()
@@ -223,16 +246,23 @@ public class poolCue : MonoBehaviour {
         }
 
         gm = GMScript.gameMan;
-        cue = gm.GetCueObject();
+        cue = poolCue.cueScript.gameObject;  
         pivot = GameObject.Find("cuePivot");
-        cue.GetComponentInChildren<MeshRenderer>().enabled = true;
-        transform.position = pivot.transform.position + cuePosOffset;
+        try
+        {
+            cue.GetComponentInChildren<MeshRenderer>().enabled = true;
+            transform.position = pivot.transform.position + cuePosOffset;
+        } catch
+        {
+            Debug.Log("Can't find cue object");
+        }
         canHit = true;
     }
 
     public void StopSpin()
     {
         spin = false;
+        fric = false;
     }
 
     public void Friction()

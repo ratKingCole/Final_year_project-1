@@ -17,6 +17,8 @@ public class spawnBalls : MonoBehaviour {
     Object blackBallPrefab;
     [SerializeField]
     Object cueBallPrefab;
+    [SerializeField]
+    Object cueStickPrefab;
    
 
     [SerializeField]
@@ -45,16 +47,19 @@ public class spawnBalls : MonoBehaviour {
         if (stripesToSpawn.Count > 0 && spotsToSpawn.Count > 0 && blackBallPrefab != null && cueBallPrefab != null)
         {
             Vector3 spawnPos = transform.position;
+            float randNum = Random.Range(-0.05f, 0.05f);
+
             float rowStartX = transform.position.x - ballRadius;
-            float rowStartZ = transform.position.z - ballRadius;
+            float rowStartZ = transform.position.z - ballRadius;        
 
             spawnPos.z = rowStartZ - (((ballRadius * 2) * 20));
             spawnPos.y += 0.01f;
+            spawnPos.x += randNum;
             Object cueBallInstantiate = Instantiate(cueBallPrefab, spawnPos, Quaternion.identity);
             gm.SetCueBallSpawn(spawnPos);
             gm.SetCueBall((GameObject)cueBallInstantiate);
             ballList.Add((GameObject)cueBallInstantiate);
-
+            spawnPos.x = rowStartX;
             spawnPos.y = transform.position.y;
             for (int i = 0; i < (rows+1); i++)
             {
@@ -92,9 +97,17 @@ public class spawnBalls : MonoBehaviour {
                 rowStartX += ballRadius;
                 startSpot = !startSpot;
             }
-
+            GameObject cueStickObject = poolCue.cueScript.gameObject;
+            cueStickObject.gameObject.SetActive(true);
+            Invoke("DelayedCueReset", 0.5f);
             gm.SetBallList(ballList);
 
         }
+    }
+
+    void DelayedCueReset()
+    {
+        GameObject cueStickObject = poolCue.cueScript.gameObject;
+        cueStickObject.GetComponent<poolCue>().ResetCue();
     }
 }

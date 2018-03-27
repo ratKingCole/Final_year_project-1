@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class GMScript : NetworkBehaviour
 {
@@ -25,6 +26,8 @@ public class GMScript : NetworkBehaviour
     bool hasGameEnded = false;
     [SyncVar]
     bool isNetworked = false;
+
+    public bool isAIGame;
 
     public delegate void PotBall();
     public static event PotBall potBallEvent;
@@ -63,6 +66,14 @@ public class GMScript : NetworkBehaviour
         playerMan.SetPlayer2Target(Target.None);
         endTurnEvent += FlipIsPlayer1TurnBool;
         startTurnEvent += StartNextTurn;
+
+        if (SceneManager.GetActiveScene().name == "SinglePlayer vs AI")
+        {
+            isAIGame = true;
+        } else
+        {
+            isAIGame = false;
+        }
     }
 
     // Update is called once per frame

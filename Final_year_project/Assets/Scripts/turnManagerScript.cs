@@ -87,11 +87,8 @@ public class turnManagerScript : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-
         gm = GMScript.gameMan;
-        cueBall = gm.GetCueBall();
-
-        
+        cueBall = gm.GetCueBall();   
 
         if (gm != null)
         {
@@ -486,6 +483,11 @@ public class turnManagerScript : NetworkBehaviour
         }
 
         ResetCue();
+
+        if (GMScript.gameMan.isAIGame && !isPlayer1Turn)
+        {
+            sim.simulator.AI();
+        }
     }
 
     public void CueBallHit()

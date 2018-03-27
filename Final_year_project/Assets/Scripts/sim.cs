@@ -47,6 +47,14 @@ public class sim : MonoBehaviour
         {
             Destroy(this);
         }
+
+        if(simulator != null)
+        {
+            simulator = this;
+        } else
+        {
+            Destroy(this);
+        }
     }
 
     void Start()
@@ -68,9 +76,8 @@ public class sim : MonoBehaviour
 
     }
 
-    void AI()
+    public void AI()
     {
-        simulator = this;
         sim_active = true;
         run(possaball_shots());
     }

@@ -562,7 +562,7 @@ public class turnManagerScript : NetworkBehaviour
     public void ResetCueBall()
     {
         poolCue.cueScript.StopSpin();
-        GameObject cueBall = GMScript.gameMan.GetCueBall();
+        GameObject cueBall = cueBallScript.cueBallSingleton.gameObject;
         Rigidbody rb = cueBall.GetComponent<Rigidbody>();
         rb.velocity = new Vector3(0f, 0f, 0f);
         rb.angularVelocity = new Vector3(0f, 0f, 0f);

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 /*
 1 11
 2 23
@@ -39,6 +40,14 @@ public class sim : MonoBehaviour
     bool show_dupe = false;
 
     //GameObject tar;
+
+    private void Awake()
+    {
+        if(SceneManager.GetActiveScene().name != "Singeplayer vs AI")
+        {
+            Destroy(this);
+        }
+    }
 
     void Start()
     {

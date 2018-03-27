@@ -43,12 +43,13 @@ public class sim : MonoBehaviour
 
     private void Awake()
     {
-        if(SceneManager.GetActiveScene().name != "Singeplayer vs AI")
+        Debug.Log("Scene name:  " + SceneManager.GetActiveScene().name);
+        if(!SceneManager.GetActiveScene().name.Equals("SinglePlayerAI"))
         {
             Destroy(this);
         }
 
-        if(simulator != null)
+        if(simulator == null)
         {
             simulator = this;
         } else
@@ -65,7 +66,7 @@ public class sim : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.S)) AI();
+        //if (Input.GetKeyDown(KeyCode.S)) AI();
 
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -390,8 +391,8 @@ public class sim : MonoBehaviour
         if (stripe_score == Mathf.Infinity) stripe_score = 0;
         if (spot_score == Mathf.Infinity) spot_score = 0;
         //print(shot);
-       print(stripe_score);
-        print(spot_score);
+        //print(stripe_score);
+        //print(spot_score);
 
         if (Target == GMScript.Target.Spots)
         {

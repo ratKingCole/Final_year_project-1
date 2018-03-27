@@ -43,8 +43,7 @@ public class cueBallScript : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Table"))
-        {
+
             if (tm == null)
             {
                 tm = turnManagerScript.turnManager;
@@ -60,7 +59,7 @@ public class cueBallScript : MonoBehaviour {
                 cueBall.GetComponent<ConstantForce>().torque = Vector3.zero;
                 GameObject.FindGameObjectWithTag("poolCue").GetComponent<poolCue>().spin = false;
             }
-        }
+    
     }
 
     public void SetSpawnPosition(Vector3 _spawn)

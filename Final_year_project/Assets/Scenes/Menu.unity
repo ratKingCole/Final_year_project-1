@@ -1222,9 +1222,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'LAN
-
-'
+  m_Text: LAN
 --- !u!222 &520718638
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1889,7 +1887,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: SinglePlayer vs AI
+          m_StringArgument: SinglePlayerAI
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -2295,6 +2293,8 @@ MonoBehaviour:
   MainMenu: {fileID: 569770839}
   PlayMenu: {fileID: 1860627102}
   SettingsMenu: {fileID: 1858624296}
+  ResolutionMenu: {fileID: 0}
+  ControlsMenu: {fileID: 0}
 --- !u!1 &1427165592
 GameObject:
   m_ObjectHideFlags: 0

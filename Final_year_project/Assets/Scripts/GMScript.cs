@@ -67,7 +67,7 @@ public class GMScript : NetworkBehaviour
         endTurnEvent += FlipIsPlayer1TurnBool;
         startTurnEvent += StartNextTurn;
 
-        if (SceneManager.GetActiveScene().name == "SinglePlayer vs AI")
+        if (SceneManager.GetActiveScene().name == "SinglePlayerAI")
         {
             isAIGame = true;
         } else

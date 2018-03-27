@@ -561,6 +561,7 @@ public class turnManagerScript : NetworkBehaviour
 
     public void ResetCueBall()
     {
+        poolCue.cueScript.StopSpin();
         GameObject cueBall = GMScript.gameMan.GetCueBall();
         Rigidbody rb = cueBall.GetComponent<Rigidbody>();
         rb.velocity = new Vector3(0f, 0f, 0f);
@@ -572,7 +573,8 @@ public class turnManagerScript : NetworkBehaviour
         cueBall.GetComponent<Rigidbody>().useGravity = true;
         cueBall.GetComponent<MeshRenderer>().enabled = true;
 
-        poolCue.cueScript.StopSpin();
+        Invoke("ResetCueBall", 0.2f);
+        
     }
 
     public void ResetCue()

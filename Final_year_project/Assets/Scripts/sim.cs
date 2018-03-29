@@ -2,18 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-/*
-1 11
-2 23
-3 36
-4 50
-5 64
-6 79
-7 94
-8 108
-9 123
-10 138
-*/
+
 public class sim : MonoBehaviour
 {
     public static sim simulator;
@@ -22,7 +11,6 @@ public class sim : MonoBehaviour
     int L2 = 0;
     Vector3 v;
     int offest = 10;
-    //GameObject cue;
     ArrayList results;
     string[] results_arr;
     float start_spot = 0f;
@@ -38,8 +26,6 @@ public class sim : MonoBehaviour
     bool db = true;
     bool balls_moving;
     bool show_dupe = false;
-
-    //GameObject tar;
 
     private void Awake()
     {
@@ -65,16 +51,6 @@ public class sim : MonoBehaviour
 
     void Update()
     {
-
-        //if (Input.GetKeyDown(KeyCode.S)) AI();
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-           
-            
-
-        }
-
     }
 
     public void AI()
@@ -104,14 +80,21 @@ public class sim : MonoBehaviour
 
             Vector3 v = new Vector3(0f, angle, 0f);
             Vector3 direction = Quaternion.Euler(v) * Vector3.forward;
+            Ray ray = new Ray(cue.transform.position, direction);
             bool cast = Physics.Raycast(cue.transform.position, direction, out hit, max);
             d = d - hit.distance;
 
+
             while (cast && hit.collider.tag == "table")
             {
+                
                 Vector3 directionR;
-                if(hit.transform.rotation.y == 90) directionR = Vector3.Reflect(direction, Vector3.right);
-                else directionR = Vector3.Reflect(direction, Vector3.forward);
+                directionR = Vector3.Reflect(ray.direction, hit.normal);
+
+                Ray reflection = new Ray(hit.point, direction);
+
+                //if(hit.transform.rotation.y == 90) directionR = Vector3.Reflect(direction, Vector3.right);
+                //else directionR = Vector3.Reflect(direction, Vector3.forward);
                 //if (hit.collider.name == "EndCushion") directionR = Vector3.Reflect(direction, Vector3.right);
                 //else directionR = Vector3.Reflect(direction, Vector3.forward);
 
@@ -125,26 +108,25 @@ public class sim : MonoBehaviour
             }
             if (cast && hit.collider.tag == gole)
             {
-                if ((max - d) <= 11) shots.Add(angle + ":" + 1);
-                if ((max - d) <= 23) shots.Add(angle + ":" + 2);
-                if ((max - d) <= 36) shots.Add(angle + ":" + 3);
-                if ((max - d) <= 50) shots.Add(angle + ":" + 4);
-                if ((max - d) <= 64) shots.Add(angle + ":" + 5);
-                if ((max - d) <= 79) shots.Add(angle + ":" + 6);
-                if ((max - d) <= 94) shots.Add(angle + ":" + 7);
-                if ((max - d) <= 108) shots.Add(angle + ":" + 8);
-                if ((max - d) <= 123) shots.Add(angle + ":" + 9);
-                if ((max - d) <= 138) shots.Add(angle + ":" + 10);
+                if ((max - d) <= 1) shots.Add(angle + ":" + 1);
+                if ((max - d) <= 2) shots.Add(angle + ":" + 2);
+                if ((max - d) <= 34) shots.Add(angle + ":" + 3);
+                if ((max - d) <= 6) shots.Add(angle + ":" + 4);
+                if ((max - d) <= 8) shots.Add(angle + ":" + 5);
+                if ((max - d) <= 10) shots.Add(angle + ":" + 6);
+                if ((max - d) <= 12) shots.Add(angle + ":" + 7);
+                if ((max - d) <= 14) shots.Add(angle + ":" + 8);
+                if ((max - d) <= 16) shots.Add(angle + ":" + 9);
+                if ((max - d) <= 19) shots.Add(angle + ":" + 10);
             }
         }
         string[] possaball_shots = (string[])shots.ToArray((typeof(string)));
         if (db) print("possaball_shots " + shots.Count);
         return possaball_shots;
     }
-    //do runs in guroops of 100 - 400
+
     void run(string[] possaball_shots)
     {
-        //possaball_shots = new string[] { "354:2" };
         if (db) print("start sim");
         results = new ArrayList();
         total_sims = possaball_shots.Length;
@@ -177,7 +159,6 @@ public class sim : MonoBehaviour
             results_arr = (string[])results.ToArray((typeof(string)));
             string[] top = new string[limit];
             for (int i = 0; i < limit; i++) top[i] = top_shot();
-            //for (int i = 0; i < limit; i++) { print(top[i]); }
             string best_shot = min(top);
             if (db) print("best shot " + best_shot);
             string[] s = best_shot.Split(':');
@@ -254,65 +235,10 @@ public class sim : MonoBehaviour
         cue.transform.eulerAngles = new Vector3(0f, angle, 0f);
         yield return new WaitForSeconds(0.01f);
         cue.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0f, 0f, power), ForceMode.Impulse);
-        //balls_moving(sim_number);
-        //print(balls_moving(sim_number));
-        //yield return new WaitForSeconds(10f);
-        //print(balls_moving(sim_number));
-        //while (!check_mov(sim_number)) {
-
-        //  yield return new WaitForSeconds(0.01f);
-
-
-        // }
-
-
         yield return new WaitForSeconds(20f);
-
-
         Analise(sim_number, shot);
         Distroy(sim_number);
         choose_shot();
-
-        //StartCoroutine(CheckObjectsHaveStopped(sim_number, shot));
-    }
-
-
-
-
-    //change this 
-    //https://answers.unity.com/questions/209472/detecting-when-all-rigidbodies-have-stopped-moving.html
-    IEnumerator CheckObjectsHaveStopped(int sim_number, string shot)
-    {
-        yield return new WaitForSeconds(0.1f);
-        //print("checking... ");
-        Rigidbody[] GOS = FindObjectsOfType(typeof(Rigidbody)) as Rigidbody[];
-        bool allSleeping = false;
-
-        while (!allSleeping)
-        {
-            //  yield return new WaitForSeconds(0.1f);
-            allSleeping = true;
-
-            foreach (Rigidbody GO in GOS)
-            {
-                if (!GO.IsSleeping())
-                {
-                    allSleeping = false;
-                    yield return null;
-                    break;
-                }
-            }
-
-        }
-        // print("All objects sleeping");
-        //Do something 
-
-        Analise(sim_number, shot);
-        Distroy(sim_number);
-        choose_shot();
-
-        balls_moving = false;
-
     }
 
     void Analise(int sim_number, string shot)
@@ -352,33 +278,21 @@ public class sim : MonoBehaviour
 
         }
 
-
         stripe_score += (start_dis - new_dis) / 10;
-        //print((start_dis - new_dis));
         stripe_score += (start_stripe - new_stripe) * 10;
 
-        //print(stripe_score);
         bool cueball = false;
         if (GameObject.Find("cdupe" + sim_number)) cueball = true;
-
-
-
         foreach (var ball in GameObject.FindGameObjectsWithTag("blackBall") as GameObject[])
         {
             if (ball.name == "dupe" + sim_number)
             {
-
                 new_dis += distens_to_pocket(ball, pocket_new, sim_number);
-                //bias moving black ball incres chang of oponent pottiong 
-
             }
             else
             {
-                // no black ball
                 if (Target == GMScript.Target.Spots && start_spot == 0) spot_score += 100;
-
                 if (Target == GMScript.Target.Stripes && start_stripe == 0) stripe_score += 100;
-
             }
             if (ball.name.Contains("Ball"))
             {
@@ -386,20 +300,13 @@ public class sim : MonoBehaviour
             }
         }
 
-
-
         if (stripe_score == Mathf.Infinity) stripe_score = 0;
         if (spot_score == Mathf.Infinity) spot_score = 0;
-        //print(shot);
-        //print(stripe_score);
-        //print(spot_score);
 
         if (Target == GMScript.Target.Spots)
         {
             if (spot_score > 0 && cueball)
             {
-                // dont know if this made it better of wourse
-                // think its bettter
                 if (new_stripe == start_stripe)
                     results.Add(spot_score + ":" + stripe_score + ":" + shot);
             }
@@ -419,8 +326,6 @@ public class sim : MonoBehaviour
 
     float distens_to_pocket(GameObject ball, Vector3[] pocket, int sim_number)
     {
-        //for(int i = 0; i < pocket.Length; i++)print(pocket[i]);
-        
         float shortest_dis = 0f;
         for (int j = 0; j < 6; j++)
         {
@@ -447,13 +352,6 @@ public class sim : MonoBehaviour
 
     void coppyTable(int sim_number, bool distroy)
     {
-        /*
-        GameObject tab2 = GameObject.Find("Table");
-        tab2.GetComponent<spawnBalls>().enabled = false;
-        v = new Vector3(tab2.transform.position.x+20, tab2.transform.position.y - offest, tab2.transform.position.z);
-        var dupe2 = Instantiate(tab2, v, Quaternion.identity);
-        */
-
 
         if (!distroy)
         {
@@ -468,7 +366,6 @@ public class sim : MonoBehaviour
                 if (child.GetComponent<Renderer>()) child.GetComponent<Renderer>().enabled = show_dupe;
                 if (child.name.Contains("PotCollider"))
                 {
-
                     pocket_new[L2] = child.position;
                     L2++;
                 }
@@ -476,7 +373,6 @@ public class sim : MonoBehaviour
 
             foreach (Transform child in d.transform)
             {
-                //if (child.GetComponent<Renderer>()) child.GetComponent<Renderer>().enabled = show_dupe;
                 if (child.name.Contains("PotCollider"))
                 {
 
@@ -484,75 +380,22 @@ public class sim : MonoBehaviour
                     L++;
                 }
             }
-            //pocket[L] = d.transform.position;
-            //L++;
         }
         else
         {
             foreach (var tab in GameObject.FindGameObjectsWithTag("Table") as GameObject[])
             {
-                
-
-
                 if (tab.name == "dupe" + sim_number && distroy)
                 {
                     Destroy(tab);
                 }
             }
-
         }
-        
-        
-        
-        /*
-        foreach (var tab in GameObject.FindGameObjectsWithTag("table_component") as GameObject[])
-        {
-            if (!tab.name.Contains("dupe") && !distroy)
-            {
-                //pocket[L] = tab.transform.position;
-                v = new Vector3(tab.transform.position.x, tab.transform.position.y - offest, tab.transform.position.z);
-                //pocket_new[L] = v;
-                var dupe = Instantiate(tab, v, Quaternion.identity);
-                // dupe.GetComponent<Renderer>().enabled = show_dupe;
-                dupe.name = "dupe" + sim_number;
-                L++;
-                dupe.transform.Rotate(0, 90, 0);
-                dupe.transform.transform.localScale = new Vector3(5f, 5f, 5f);
-            }
-            else if (tab.name == "dupe" + sim_number && distroy)
-            {
-                Destroy(tab);
-            }
-        }
-        */
-
-        /*
-        foreach (var tab in GameObject.FindGameObjectsWithTag("Pocket") as GameObject[])
-        {
-            if (!tab.name.Contains("dupe") && !distroy)
-            {
-                pocket[L] = tab.transform.position;
-                v = new Vector3(tab.transform.position.x, tab.transform.position.y - offest, tab.transform.position.z);
-                pocket_new[L] = v;
-                //var dupe = Instantiate(tab, v, Quaternion.identity);
-               // dupe.GetComponent<Renderer>().enabled = show_dupe;
-                //dupe.name = "dupe" + sim_number;
-                L++;
-            }
-            else if (tab.name == "dupe" + sim_number && distroy)
-            {
-                Destroy(tab);
-            }
-        }
-        */
-
     }
 
     GameObject copyBalls(int sim_number, bool distroy)
     {
         GameObject cue = null;
-
-
         foreach (var ball in GameObject.FindGameObjectsWithTag("spotBall") as GameObject[])
         {
             if (!ball.name.Contains("dupe") && !distroy)
